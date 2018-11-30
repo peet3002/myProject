@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:title="หน้าแรก"
+        android:icon="@drawable/home"/>
+
+    <item
+        android:id="@+id/nav_profile"
+        android:title="โปรไฟล์"
+        android:icon="@drawable/profile_icon"/>
+
+    <item
+        android:id="@+id/nav_post"
+        android:title="เขียนกระทู้ใหม่"
+        android:icon="@drawable/add_post"/>
+
+
+    <item
+        android:id="@+id/nav_friends"
+        android:title="รายชื่อที่ปรึกษา"
+        android:icon="@drawable/friends"/>
+
+    <item
+        android:id="@+id/nav_find_friends"
+        android:title="ค้นหาที่ปรึกษา"
+        android:icon="@drawable/find_people"/>
+
+    <item
+        android:id="@+id/nav_messages"
+        android:title="ข้อความ"
+        android:icon="@drawable/messages"/>
+
+    <item
+        android:id="@+id/nav_settings"
+        android:title="ตั้งค่า"
+        android:icon="@drawable/settings"/>
+
+    <item
+        android:id="@+id/nav_logout"
+        android:title="ออกจากระบบ"
+        android:icon="@drawable/logout"/>
+
+</menu>
