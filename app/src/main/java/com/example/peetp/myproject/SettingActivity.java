@@ -20,7 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SettingActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private EditText userName, fullName, major, status, mobileNumber;
+    private EditText userName, fullName, major, status, mobileNumber,uid;
     private Button updateAccountBtn;
     private CircleImageView userProfileImg;
 
@@ -43,6 +43,7 @@ public class SettingActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("ตั้งค่า");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        uid = (EditText) findViewById(R.id.settings_uid);
         userName = (EditText) findViewById(R.id.settings_username);
         fullName = (EditText) findViewById(R.id.settings_fullname);
         major = (EditText) findViewById(R.id.settings_major);
@@ -56,6 +57,7 @@ public class SettingActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
+                    String myUid = dataSnapshot.child("uid").getValue().toString();
                     String myUserName = dataSnapshot.child("username").getValue().toString();
                     String myFullName = dataSnapshot.child("fullname").getValue().toString();
                     String myMajor = dataSnapshot.child("major").getValue().toString();
@@ -63,6 +65,7 @@ public class SettingActivity extends AppCompatActivity {
                     String myStatus = dataSnapshot.child("status").getValue().toString();
 
                     Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfileImg);
+                    uid.setText(myUid);
                     userName.setText(myUserName);
                     fullName.setText(myFullName);
                     major.setText(myMajor);
