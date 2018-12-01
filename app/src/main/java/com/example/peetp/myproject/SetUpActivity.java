@@ -164,8 +164,9 @@ public class SetUpActivity extends AppCompatActivity {
                 if(resultCode == RESULT_OK){
                     loadingBar.setTitle("Profile Image");
                     loadingBar.setMessage("กรุณารอสักครู่กำลังอัพเดทรูปภาพของคุณ...");
-                    loadingBar.show();
                     loadingBar.setCanceledOnTouchOutside(true);
+                    loadingBar.show();
+
 
                     Uri resultUri = result.getUri();
 
@@ -226,16 +227,19 @@ public class SetUpActivity extends AppCompatActivity {
         String userMobileNumber = mobileNumber.getText().toString();
         String userId = id.getText().toString();
 
-        if(TextUtils.isEmpty(userFullName)){
+        if(TextUtils.isEmpty(userId)){
+            Toast.makeText(this, "กรุณากรอกรหัสนักศึกษา", Toast.LENGTH_SHORT).show();
+        }
+        else if(TextUtils.isEmpty(userFullName)){
             Toast.makeText(this, "กรุณากรอกชื่อ-นามสกุล", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(userName)){
+        else if(TextUtils.isEmpty(userName)){
             Toast.makeText(this, "กรุณาชื่อโปรไฟล์", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(userMajor)){
+        else if(TextUtils.isEmpty(userMajor)){
             Toast.makeText(this, "กรุณากรอกสาขา", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(userMobileNumber)){
+        else if(TextUtils.isEmpty(userMobileNumber)){
             Toast.makeText(this, "กรุณากรอกเบอร์โทรศัพท์", Toast.LENGTH_SHORT).show();
         }
         else{

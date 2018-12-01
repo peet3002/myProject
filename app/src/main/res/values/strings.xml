@@ -2,4 +2,14 @@
     <string name="app_name">myProject</string>
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_close">Drawer Close</string>
+    <string-array name="major">
+        <item></item>
+        <item>เคมี</item>
+        <item>คณิตศาสตร์</item>
+        <item>ชีววิทยา</item>
+        <item>ฟิสิกส์</item>
+        <item>เทคโนโลยีสารสนเทศ</item>
+        <item>วิทยาการคอมพิวเตอร์</item>
+        <item>สถิติประยุกต์</item>
+    </string-array>
 </resources>
