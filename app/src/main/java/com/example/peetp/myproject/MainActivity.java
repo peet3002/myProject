@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         addNewPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SendUserToPostActivity();
+                sendUserToPostActivity();
             }
         });
         DisplsyAllUsersPost();
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
     private void UserMenuSelector(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_profile:
-                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+                sendUserToProfileActivity();
                 break;
 
             case R.id.nav_home:
@@ -228,17 +228,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Messages", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.nav_settings:
-                SendUserToSettingsActivity();
-                break;
-
             case R.id.nav_logout:
                 mAuth.signOut();
-                SendUserToLoginActivity();
+                sendUserToLoginActivity();
                 break;
 
             case R.id.nav_post:
-                SendUserToPostActivity();
+                sendUserToPostActivity();
                 break;
 
 
@@ -247,13 +243,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if(currentUser == null){
-            SendUserToLoginActivity();
+            sendUserToLoginActivity();
         }
         else{
             CheckUserExistence();
@@ -287,20 +284,22 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void SendUserToLoginActivity() {
+    private void sendUserToLoginActivity() {
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
         finish();
     }
 
-    private void SendUserToPostActivity() {
+    private void sendUserToPostActivity() {
         Intent addNewPostIntent = new Intent(MainActivity.this, PostActivity.class);
         startActivity(addNewPostIntent);
     }
 
-    private void SendUserToSettingsActivity() {
-        Intent settingIntent = new Intent(MainActivity.this, SettingActivity.class);
-        startActivity(settingIntent);
+
+    private void sendUserToProfileActivity() {
+        Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(profileIntent);
     }
+
 }

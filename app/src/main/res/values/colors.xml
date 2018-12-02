@@ -4,4 +4,12 @@
     <color name="colorPrimaryDark">#de4227</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="solidCircle">#AAFFFFFF</color>
+    <color name="circleBorder">#50FFFFFF</color>
+    <color name="status">#2F7092</color>
+    <color name="grey">#E5E5E5</color>
+
+
+
+
 </resources>

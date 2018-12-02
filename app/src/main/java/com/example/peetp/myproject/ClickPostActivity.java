@@ -52,6 +52,11 @@ public class ClickPostActivity extends AppCompatActivity {
         clickPostEdit = (ImageButton) findViewById(R.id.click_post_edit);
         clickPostDelete = (ImageButton) findViewById(R.id.click_post_delete);
 
+        mToolbar = (Toolbar) findViewById(R.id.click_post_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         clickPostDelete.setVisibility(View.INVISIBLE);
         clickPostEdit.setVisibility(View.INVISIBLE);
 

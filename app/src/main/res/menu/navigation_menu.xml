@@ -30,12 +30,6 @@
         android:id="@+id/nav_messages"
         android:title="ข้อความ"
         android:icon="@drawable/messages"/>
-
-    <item
-        android:id="@+id/nav_settings"
-        android:title="ตั้งค่า"
-        android:icon="@drawable/settings"/>
-
     <item
         android:id="@+id/nav_logout"
         android:title="ออกจากระบบ"
