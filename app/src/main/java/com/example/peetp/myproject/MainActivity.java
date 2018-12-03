@@ -156,6 +156,15 @@ public class MainActivity extends AppCompatActivity {
                         Picasso.get().load(model.getProfileimage()).into(holder.postProfileImage);
                         Picasso.get().load(model.getPostimage()).into(holder.postImage);
 
+                        holder.commentPostButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent commentIntent = new Intent(MainActivity.this, CommentsActivity.class);
+                                commentIntent.putExtra("PostKey",PostKey);
+                                startActivity(commentIntent);
+                            }
+                        });
+
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -180,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder{
+        ImageButton commentPostButton;
         CircleImageView postProfileImage;
         ImageView postImage;
         TextView postDate,postTime,postUsername,postDescription;
@@ -187,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            commentPostButton = itemView.findViewById(R.id.post_comment_btn);
             postUsername = itemView.findViewById(R.id.post_user_name);
             postDate = itemView.findViewById(R.id.post_date);
             postTime = itemView.findViewById(R.id.post_time);

@@ -36,7 +36,8 @@
             android:name=".SettingActivity"
             android:parentActivityName=".ProfileActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".FindTeacherActivity"></activity>
+        <activity android:name=".FindTeacherActivity" />
+        <activity android:name=".CommentsActivity"></activity>
     </application>
 
 </manifest>

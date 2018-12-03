@@ -27,14 +27,14 @@ public class ClickPostActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
 
-    private ImageView clickPostImage;
-    private TextView clickPostDescription;
+    private ImageView clickPostImage, clickPostProfileImg;
+    private TextView clickPostDescription, clickPostUsername, clickPostDate, clickPostTime;
     private ImageButton clickPostEdit, clickPostDelete;
 
     private DatabaseReference clickRef;
     private FirebaseAuth mAuth;
 
-    private String PostKey, currentUserId, databaseUserId, description, image;
+    private String PostKey, currentUserId, databaseUserId, description, postImage, username, date, time, profileImage;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -47,6 +47,10 @@ public class ClickPostActivity extends AppCompatActivity {
         PostKey = getIntent().getExtras().get("PostKey").toString();
         clickRef = FirebaseDatabase.getInstance().getReference().child("Posts").child(PostKey);
 
+        clickPostUsername =  (TextView) findViewById(R.id.click_profile_name);
+        clickPostDate = (TextView) findViewById(R.id.click_post_date);
+        clickPostTime = (TextView) findViewById(R.id.click_post_time);
+        clickPostProfileImg = (ImageView) findViewById(R.id.click_profile_img) ;
         clickPostImage = (ImageView) findViewById(R.id.click_post_image);
         clickPostDescription = (TextView) findViewById(R.id.click_post_description);
         clickPostEdit = (ImageButton) findViewById(R.id.click_post_edit);
@@ -56,6 +60,7 @@ public class ClickPostActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("");
 
         clickPostDelete.setVisibility(View.INVISIBLE);
         clickPostEdit.setVisibility(View.INVISIBLE);
@@ -64,12 +69,20 @@ public class ClickPostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                if(dataSnapshot.exists()){
+                   username = dataSnapshot.child("username").getValue().toString();
+                   date = dataSnapshot.child("date").getValue().toString();
+                   time = dataSnapshot.child("time").getValue().toString();
                    description = dataSnapshot.child("description").getValue().toString();
-                   image = dataSnapshot.child("postimage").getValue().toString();
+                   postImage = dataSnapshot.child("postimage").getValue().toString();
+                   profileImage = dataSnapshot.child("profileimage").getValue().toString();
                    databaseUserId = dataSnapshot.child("uid").getValue().toString();
 
+                   clickPostUsername.setText(username);
+                   clickPostDate.setText(date);
+                   clickPostTime.setText(time);
                    clickPostDescription.setText(description);
-                   Picasso.get().load(image).into(clickPostImage);
+                   Picasso.get().load(postImage).into(clickPostImage);
+                   Picasso.get().load(profileImage).into(clickPostProfileImg);
 
                    if(currentUserId.equals(databaseUserId)){
                        clickPostDelete.setVisibility(View.VISIBLE);

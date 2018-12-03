@@ -90,6 +90,14 @@
 
         </LinearLayout>
 
+
+        <ImageView
+            android:id="@+id/post_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            android:adjustViewBounds="true" />
+
         <TextView
             android:id="@+id/post_all_description"
             android:layout_width="match_parent"
@@ -97,16 +105,26 @@
             android:text="Post description......"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp"
             android:padding="3dp"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:textColor="@android:color/black"/>
 
-        <ImageView
-            android:id="@+id/post_image"
+        <ImageButton
+            android:id="@+id/post_comment_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/colorWhite"
+            android:scaleType="centerCrop"
+            android:src="@drawable/blogging"
+            android:layout_marginLeft="300dp"/>
+
+
+        <TextView
+            android:id="@+id/all_comment"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="3dp"
-            android:adjustViewBounds="true" />
+            android:layout_height="wrap_content"
+            android:text="view all comment"/>
 
     </LinearLayout>
 
