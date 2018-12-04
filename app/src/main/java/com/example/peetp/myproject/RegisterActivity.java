@@ -37,6 +37,33 @@ public class RegisterActivity extends AppCompatActivity {
         createAccountButton = (Button) findViewById(R.id.register_create_account);
         loadingBar = new ProgressDialog(this);
 
+        userPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+
+                    if(userPassword.getText().toString().length() < 6){
+                        userPassword.setError("รหัสผ่านต้องมีความยาวมากกว่า 6 ตัว");
+                    }else{
+
+                    }
+                }
+            }
+        });
+
+        userConfirmPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(!userConfirmPassword.getText().toString().equals(userPassword)){
+                        userConfirmPassword.setError("รหัสผ่านไม่ตรงกัน");
+                    }
+                }
+            }
+        });
+
+
+
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

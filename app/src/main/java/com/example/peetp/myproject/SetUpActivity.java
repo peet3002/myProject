@@ -42,7 +42,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SetUpActivity extends AppCompatActivity {
 
-    private EditText fullname, name, major, mobileNumber, id;
+    private EditText fullname, name, major, mobileNumber, id, email;
 
     private Button saveInformationbutton;
     private CircleImageView profileImage;
@@ -72,6 +72,7 @@ public class SetUpActivity extends AppCompatActivity {
         name = (EditText) findViewById(R.id.setup_name);
         major = (EditText) findViewById(R.id.setup_major);
         mobileNumber = (EditText) findViewById(R.id.setup_mobile);
+        email = (EditText) findViewById(R.id.setup_email);
         saveInformationbutton = (Button) findViewById(R.id.setup_save_btn);
         profileImage = (CircleImageView) findViewById(R.id.setup_profile_image);
 
@@ -226,6 +227,7 @@ public class SetUpActivity extends AppCompatActivity {
         String userMajor = major.getText().toString();
         String userMobileNumber = mobileNumber.getText().toString();
         String userId = id.getText().toString();
+        String userEmail = email.getText().toString();
 
         if(TextUtils.isEmpty(userId)){
             Toast.makeText(this, "กรุณากรอกรหัสนักศึกษา", Toast.LENGTH_SHORT).show();
@@ -241,6 +243,8 @@ public class SetUpActivity extends AppCompatActivity {
         }
         else if(TextUtils.isEmpty(userMobileNumber)){
             Toast.makeText(this, "กรุณากรอกเบอร์โทรศัพท์", Toast.LENGTH_SHORT).show();
+        }else if(TextUtils.isEmpty(userEmail)){
+            Toast.makeText(this, "กรุณากรอกอีเมล์", Toast.LENGTH_SHORT).show();
         }
         else{
             loadingBar.setTitle("กำลังบันทึกข้อมูล");
@@ -254,6 +258,7 @@ public class SetUpActivity extends AppCompatActivity {
             userMap.put("fullname", userFullName);
             userMap.put("major", userMajor);
             userMap.put("mobilenumber", userMobileNumber);
+            userMap.put("email",  userEmail);
             userMap.put("status", "Hey there i am using Test");
             userMap.put("usertype","student");
             userRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
