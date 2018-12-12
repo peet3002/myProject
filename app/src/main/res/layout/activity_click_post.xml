@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,121 +7,143 @@
     android:layout_height="match_parent"
     tools:context=".ClickPostActivity">
 
-    <include
-        android:id="@+id/click_post_page_toolbar"
-        layout="@layout/app_bar_layout" />
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/click_post_delete"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="4dp"
-        android:background="@color/colorPrimary"
-        android:baselineAlignBottom="false"
-        android:focusableInTouchMode="false"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_delete" />
+       <include
+           android:id="@+id/click_post_page_toolbar"
+           layout="@layout/app_bar_layout" />
 
-    <ImageButton
-        android:id="@+id/click_post_edit"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="70dp"
-        android:layout_marginBottom="4dp"
-        android:background="@color/colorPrimary"
-        android:baselineAlignBottom="false"
-        android:focusableInTouchMode="false"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_edit" />
+       <ImageButton
+           android:id="@+id/click_post_delete"
+           android:layout_width="30dp"
+           android:layout_height="30dp"
+           android:layout_alignParentEnd="true"
+           android:layout_marginTop="15dp"
+           android:layout_marginRight="10dp"
+           android:layout_marginBottom="4dp"
+           android:background="@color/colorPrimary"
+           android:baselineAlignBottom="false"
+           android:focusableInTouchMode="false"
+           android:scaleType="centerCrop"
+           android:src="@drawable/ic_delete" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/click_profile_img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/click_post_page_toolbar"
-        android:src="@drawable/profile" />
+       <ImageButton
+           android:id="@+id/click_post_edit"
+           android:layout_width="30dp"
+           android:layout_height="30dp"
+           android:layout_alignParentEnd="true"
+           android:layout_marginTop="15dp"
+           android:layout_marginRight="70dp"
+           android:layout_marginBottom="4dp"
+           android:background="@color/colorPrimary"
+           android:baselineAlignBottom="false"
+           android:focusableInTouchMode="false"
+           android:scaleType="centerCrop"
+           android:src="@drawable/ic_edit" />
 
-    <TextView
-        android:id="@+id/click_profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/click_profile_img"
-        android:layout_toEndOf="@+id/click_profile_img"
-        android:text="Profile Name"
-        android:textColor="#555555"
-        android:textSize="16sp"
-        android:layout_marginLeft="5dp"/>
+       <de.hdodenhof.circleimageview.CircleImageView
+           android:id="@+id/click_profile_img"
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:layout_marginLeft="15dp"
+           android:layout_marginTop="15dp"
+           android:scaleType="centerCrop"
+           android:layout_below="@+id/click_post_page_toolbar"
+           android:src="@drawable/profile" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/click_profile_name"
-        android:layout_alignStart="@+id/click_profile_name">
+       <TextView
+           android:id="@+id/click_profile_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@+id/click_profile_img"
+           android:layout_toEndOf="@+id/click_profile_img"
+           android:text="Profile Name"
+           android:textColor="#555555"
+           android:textSize="16sp"
+           android:layout_marginLeft="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ตั้งกระทู้เมื่อ "
-            android:textColor="#999999"/>
-        <TextView
-            android:id="@+id/click_post_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date"
-            android:textColor="#999999"
-             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textColor="#999999" />
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_below="@+id/click_profile_name"
+           android:layout_alignStart="@+id/click_profile_name">
 
-        <TextView
-            android:id="@+id/click_post_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time"
-            android:textColor="#999999" />
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="ตั้งกระทู้เมื่อ "
+               android:textColor="#999999"/>
+           <TextView
+               android:id="@+id/click_post_date"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Date"
+               android:textColor="#999999"
+               />
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text=":"
+               android:textColor="#999999" />
 
-
-
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/click_post_image"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@id/click_profile_img"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        app:srcCompat="@drawable/select_image" />
-
-    <TextView
-        android:id="@+id/click_post_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/click_post_image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:padding="8dp"
-        android:text="Post description..." />
+           <TextView
+               android:id="@+id/click_post_time"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Time"
+               android:textColor="#999999" />
 
 
 
+       </LinearLayout>
 
-</RelativeLayout>
+       <LinearLayout
+           android:id="@+id/linear_post"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_below="@+id/click_profile_img"
+           android:layout_marginTop="5dp">
+
+           <ImageView
+               android:id="@+id/click_post_image"
+               android:layout_width="match_parent"
+               android:layout_height="300dp"
+               android:layout_below="@id/click_profile_img"
+               android:layout_centerHorizontal="true"
+               android:layout_marginStart="10dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginEnd="10dp"
+               android:layout_marginBottom="10dp"
+               app:srcCompat="@drawable/select_image" />
+
+           <TextView
+               android:id="@+id/click_post_description"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/click_post_image"
+               android:layout_centerHorizontal="true"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="10dp"
+               android:layout_marginRight="20dp"
+               android:padding="8dp"
+               android:text="Post description..." />
+       </LinearLayout>
+
+       <android.support.v7.widget.RecyclerView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/click_recycler_view"
+           android:layout_margin="10dp"
+           android:layout_below="@+id/linear_post">
+
+       </android.support.v7.widget.RecyclerView>
+
+   </RelativeLayout>
+
+
+
+</ScrollView>

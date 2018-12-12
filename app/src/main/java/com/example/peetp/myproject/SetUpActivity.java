@@ -2,12 +2,16 @@ package com.example.peetp.myproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,6 +79,20 @@ public class SetUpActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.setup_email);
         saveInformationbutton = (Button) findViewById(R.id.setup_save_btn);
         profileImage = (CircleImageView) findViewById(R.id.setup_profile_image);
+
+        String simple = "ชื่อโปรไฟล์";
+        String colored = "*";
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        builder.append(simple);
+        int start = builder.length();
+        builder.append(colored);
+        int end = builder.length();
+
+        builder.setSpan(new ForegroundColorSpan(Color.RED), start , end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        name.setHint(builder);
+
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
