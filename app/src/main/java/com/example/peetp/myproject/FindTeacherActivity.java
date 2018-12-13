@@ -1,5 +1,6 @@
 package com.example.peetp.myproject;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -62,21 +63,32 @@ public class FindTeacherActivity extends AppCompatActivity {
 
         Query fQuery = userRef.orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
         Query fQuery2 = userRef.orderByChild("username_type").equalTo(searchText + "_teacher");
-        Query fQuery3 = userRef.orderByChild("username_type").startAt(searchText).endAt(searchText + "_teacher" + "\uf8ff");
+        Query fQuery3 = userRef.orderByChild("username_type").startAt("teacher_" + searchText).endAt("teacher_" + searchText + "\uf8ff");
 
 
         FirebaseRecyclerOptions<Users> options =
                 new FirebaseRecyclerOptions.Builder<Users>()
-                .setQuery(fQuery, Users.class)
+                .setQuery(fQuery3, Users.class)
                 .build();
 
         FirebaseRecyclerAdapter<Users,UsersViewHolder> firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Users, UsersViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull UsersViewHolder holder, int position, @NonNull Users model) {
+            protected void onBindViewHolder(@NonNull UsersViewHolder holder, final int position, @NonNull Users model) {
                 holder.findUsername.setText(model.getUsername());
                 holder.findStatus.setText(model.getStatus());
                 Picasso.get().load(model.getProfileimage()).into(holder.findUserImg);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String visit_user_id =  getRef(position).getKey();
+
+                        Intent profileIntent = new Intent(FindTeacherActivity.this, PersonProfileActivity.class);
+                        profileIntent.putExtra("visit_user_id", visit_user_id);
+                        startActivity(profileIntent);
+                    }
+                });
 
             }
 

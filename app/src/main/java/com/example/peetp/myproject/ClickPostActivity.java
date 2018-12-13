@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,7 +87,19 @@ public class ClickPostActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.click_post_page_toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("");
+
+        final ScrollView main = (ScrollView) findViewById(R.id.scrollView1);
+
+        main.post(new Runnable() {
+            @Override
+            public void run() {
+                main.scrollTo(0,0);
+            }
+        });
+
 
         clickPostDelete.setVisibility(View.INVISIBLE);
         clickPostEdit.setVisibility(View.INVISIBLE);

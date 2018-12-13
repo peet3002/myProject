@@ -37,7 +37,9 @@
             android:parentActivityName=".ProfileActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".FindTeacherActivity" />
-        <activity android:name=".CommentsActivity"></activity>
+        <activity android:name=".CommentsActivity" />
+        <activity android:name=".PersonProfileActivity" />
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>

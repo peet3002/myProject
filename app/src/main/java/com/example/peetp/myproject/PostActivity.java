@@ -50,6 +50,7 @@ public class PostActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private String saveCurrentDate, saveCurrentTime, postRandomName, downloadUrl, current_user_id;
+    private long countPosts = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,12 +146,29 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void SavingPostInformationToDatabase() {
+        postRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    countPosts = dataSnapshot.getChildrenCount();
+                }
+                else{
+                    countPosts = 0;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         usersRef.child(current_user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    String userName = dataSnapshot.child("username").getValue().toString();
-                    String userProfileImage = dataSnapshot.child("profileimage").getValue().toString();
+                    final String userName = dataSnapshot.child("username").getValue().toString();
+                    final String userProfileImage = dataSnapshot.child("profileimage").getValue().toString();
 
                     HashMap postsMap = new HashMap();
                     postsMap.put("uid", current_user_id);
@@ -160,6 +178,7 @@ public class PostActivity extends AppCompatActivity {
                     postsMap.put("postimage", downloadUrl);
                     postsMap.put("profileimage", userProfileImage);
                     postsMap.put("username", userName);
+                    postsMap.put("counter", countPosts);
 
                     postRef.child(current_user_id + postRandomName).updateChildren(postsMap)
                             .addOnCompleteListener(new OnCompleteListener() {
@@ -167,19 +186,16 @@ public class PostActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task task) {
                                     if(task.isSuccessful()){
                                         sendUserToMainActivity();
-                                        Toast.makeText(PostActivity.this, "New Post is updated successfully.",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PostActivity.this, "กระทู้ของคุณถูกสร้างเรียบร้อยแล้ว.",Toast.LENGTH_SHORT).show();
                                         loadingBar.dismiss();
                                     }
                                     else{
 
-                                        Toast.makeText(PostActivity.this, "Error occured while updating your post.  ",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PostActivity.this, "เกิดเหตุขัดข้อง: ขณะกำลังสร้างกระทู้.  ",Toast.LENGTH_SHORT).show();
                                         loadingBar.dismiss();
                                     }
                                 }
                             });
-
-
-
                 }
             }
 

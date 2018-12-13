@@ -89,11 +89,11 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     SendUserToMainActivity();
-                                    Toast.makeText(LoginActivity.this, "เข้าสู่ระบบสำเร็ข", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "เข้าสู่ระบบสำเร็จ", Toast.LENGTH_SHORT).show();
                                     loadingBar.dismiss();
                                 }else{
                                     String message = task.getException().getMessage();
-                                    Toast.makeText(LoginActivity.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "เกิดเหตุขัดข้อง: " + message, Toast.LENGTH_SHORT).show();
                                     loadingBar.dismiss();
                                 }
                             }

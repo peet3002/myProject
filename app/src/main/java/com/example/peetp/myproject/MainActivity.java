@@ -30,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -138,9 +139,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void DisplsyAllUsersPost() {
 
+        Query sortPost = postsRef.orderByChild("counter");
+
         FirebaseRecyclerOptions<Posts> options =
                 new FirebaseRecyclerOptions.Builder<Posts>()
-                .setQuery(postsRef, Posts.class)
+                .setQuery(sortPost, Posts.class)
                 .build();
 
         FirebaseRecyclerAdapter<Posts,PostViewHolder> firebaseRecyclerAdapter =
@@ -228,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.nav_friends:
-                Toast.makeText(this, "Friends List", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "friends", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.nav_find_friends:
@@ -317,6 +320,12 @@ public class MainActivity extends AppCompatActivity {
         Intent findTeacherIntent = new Intent(MainActivity.this, FindTeacherActivity.class);
         startActivity(findTeacherIntent);
     }
+
+    private void sendUserToPersonProfileActivity() {
+        Intent personProfileIntent = new Intent(MainActivity.this, PersonProfileActivity.class);
+        startActivity(personProfileIntent);
+    }
+
 
 
 }

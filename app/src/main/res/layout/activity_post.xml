@@ -43,6 +43,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="93dp"
         android:padding="10dp"
-        android:text=" Update Post" />
+        android:text="สร้างกระทู้" />
 
 </RelativeLayout>

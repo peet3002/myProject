@@ -78,12 +78,13 @@
                 android:layout_height="wrap_content"
                 android:hint="เบอร์โทรศัพท์"
                 android:inputType="number" />
-        <EditText
+
+        <!-- <EditText
             android:id="@+id/setup_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="อีเมล์"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress" /> -->
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton

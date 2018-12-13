@@ -147,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                             else{
                                 String message = task.getException().getMessage();
-                                Toast.makeText(RegisterActivity.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "เกิดเหตุขัดข้อง: " + message, Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
                         }

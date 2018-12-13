@@ -208,7 +208,7 @@ public class SettingActivity extends AppCompatActivity {
                                                     }
                                                     else {
                                                         String message = task.getException().getMessage();
-                                                        Toast.makeText(SettingActivity.this,"Error Occured: " +message, Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(SettingActivity.this,"เกิดเหตุขัดข้อง: " +message, Toast.LENGTH_SHORT).show();
                                                         loadingBar.dismiss();
                                                     }
 
