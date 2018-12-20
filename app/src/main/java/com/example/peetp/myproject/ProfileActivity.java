@@ -20,7 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView userName, userFullname, userStatus, userMajor, userUid, userMobilePhone;
+    private TextView userName, userFullname, userStatus, userMajor, userUid, userMobilePhone, userDegree, userSec;
     private CircleImageView userProfileImg;
     private ImageButton imageButton;
 
@@ -44,8 +44,11 @@ public class ProfileActivity extends AppCompatActivity {
         userStatus = (TextView) findViewById(R.id.profile_status);
         userMajor = (TextView) findViewById(R.id.profile_major);
         userUid = (TextView) findViewById(R.id.profile_uid);
+        userDegree = (TextView) findViewById(R.id.profile_degree);
+        userSec = (TextView) findViewById(R.id.profile_sec);
         userMobilePhone = (TextView) findViewById(R.id.profile_moblie);
         userProfileImg = (CircleImageView) findViewById(R.id.profile_image);
+
 
         imageButton = (ImageButton) findViewById(R.id.profile_img_btn);
 
@@ -60,6 +63,8 @@ public class ProfileActivity extends AppCompatActivity {
                     String myMajor = dataSnapshot.child("major").getValue().toString();
                     String myMobileNumber = dataSnapshot.child("mobilenumber").getValue().toString();
                     String myStatus = dataSnapshot.child("status").getValue().toString();
+                    String myDegree = dataSnapshot.child("degree").getValue().toString();
+                    String mySec = dataSnapshot.child("sec").getValue().toString();
 
                     Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfileImg);
                     userUid.setText(myUid);
@@ -68,6 +73,8 @@ public class ProfileActivity extends AppCompatActivity {
                     userFullname.setText(myFullName);
                     userStatus.setText(myStatus);
                     userMobilePhone.setText(myMobileNumber);
+                    userDegree.setText(myDegree);
+                    userSec.setText(mySec);
                 }
             }
 

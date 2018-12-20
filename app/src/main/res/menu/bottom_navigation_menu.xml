@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_request"
+        android:enabled="true"
+        android:icon="@drawable/ic_add_white"
+        android:title="ส่งคำขอ"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_cancel"
+        android:enabled="true"
+        android:icon="@drawable/ic_cancel_white"
+        android:title="ยกเลิกคำขอ"
+        app:showAsAction="ifRoom" />
+
+</menu>

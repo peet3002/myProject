@@ -1,4 +1,4 @@
-package com.example.peetp.myproject;
+package com.example.peetp.myproject.model;
 
 public class Posts {
     public String uid, time, date, postimage, profileimage, description, username ;

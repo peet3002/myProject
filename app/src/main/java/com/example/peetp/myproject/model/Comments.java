@@ -1,4 +1,4 @@
-package com.example.peetp.myproject;
+package com.example.peetp.myproject.model;
 
 public class Comments {
     public String comment, date, profileimage, time, uid, username;

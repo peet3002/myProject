@@ -12,16 +12,13 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.peetp.myproject.model.Users;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -61,9 +58,7 @@ public class FindTeacherActivity extends AppCompatActivity {
 
     private void firebaseUserSearch(String searchText) {
 
-        Query fQuery = userRef.orderByChild("username").startAt(searchText).endAt(searchText + "\uf8ff");
-        Query fQuery2 = userRef.orderByChild("username_type").equalTo(searchText + "_teacher");
-        Query fQuery3 = userRef.orderByChild("username_type").startAt("teacher_" + searchText).endAt("teacher_" + searchText + "\uf8ff");
+        Query fQuery3 = userRef.orderByChild("type_username").startAt("teacher_" + searchText).endAt("teacher_" + searchText + "\uf8ff");
 
 
         FirebaseRecyclerOptions<Users> options =

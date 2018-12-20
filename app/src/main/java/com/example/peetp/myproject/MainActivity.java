@@ -17,11 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.peetp.myproject.model.Posts;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +34,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView navProfileUserName;
     private ImageButton addNewPostButton;
 
+    private String profileDefault = "https://firebasestorage.googleapis.com/v0/b/myproject-adc06.appspot.com/o/Profile%20Images%2Fprofile.png?alt=media&token=c5fb2184-5b8b-4e18-a791-95a52592f9ec";
 
     private DatabaseReference usersRef, postsRef;
 
@@ -91,12 +92,17 @@ public class MainActivity extends AppCompatActivity {
         View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
         navProfileImage = (CircleImageView) navView.findViewById(R.id.nav_profile_image);
         navProfileUserName = (TextView) navView.findViewById(R.id.nav_user_full_name);
+        invalidateOptionsMenu();
 
+       checkUser();
 
         usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    if(!dataSnapshot.hasChild("profileimage")){
+                        usersRef.child(currentUserId).child("profileimage").setValue(profileDefault);
+                    }
                     if(dataSnapshot.hasChild("username")){
                         String name = dataSnapshot.child("username").getValue().toString();
                         navProfileUserName.setText(name);
@@ -106,8 +112,9 @@ public class MainActivity extends AppCompatActivity {
                         String image = dataSnapshot.child("profileimage").getValue().toString();
                         Picasso.get().load(image).placeholder(R.drawable.profile).into(navProfileImage);
                     }
-                    else{
-                        Toast.makeText(MainActivity.this, "Profile name do not exists...",Toast.LENGTH_SHORT).show();
+                    else {
+                        //Toast.makeText(MainActivity.this, "Profile name do not exists...",Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }
@@ -117,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -135,7 +140,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         DisplsyAllUsersPost();
+
+
     }
+
+    private void checkUser() {
+        final Menu nav_Menu = navigationView.getMenu();
+        usersRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String usertype = dataSnapshot.child("usertype").getValue().toString();
+                    if(usertype.equals("teacher")){
+                        nav_Menu.findItem(R.id.nav_profile).setVisible(false);
+                        nav_Menu.findItem(R.id.nav_teacher_profile).setVisible(true);
+
+                    }else{
+                        nav_Menu.findItem(R.id.nav_profile).setVisible(true);
+                        nav_Menu.findItem(R.id.nav_teacher_profile).setVisible(false);
+                    }
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     private void DisplsyAllUsersPost() {
 
@@ -221,11 +257,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void UserMenuSelector(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.nav_profile:
                 sendUserToProfileActivity();
                 break;
-
+            case R.id.nav_teacher_profile:
+                sendUserToTeacherProfileActivity();
+                break;
             case R.id.nav_home:
                 Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
                 break;
@@ -250,8 +289,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_post:
                 sendUserToPostActivity();
                 break;
-
-
 
         }
 
@@ -287,8 +324,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void sendUserToSetupActivity() {
@@ -321,11 +356,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(findTeacherIntent);
     }
 
-    private void sendUserToPersonProfileActivity() {
-        Intent personProfileIntent = new Intent(MainActivity.this, PersonProfileActivity.class);
-        startActivity(personProfileIntent);
+    private void sendUserToTeacherProfileActivity() {
+        Intent teacherProfileIntent = new Intent(MainActivity.this, TeacherProfileActivity.class);
+        startActivity(teacherProfileIntent);
     }
-
 
 
 }

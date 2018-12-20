@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Gallery;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -33,16 +32,14 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingTeacherActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private EditText userName, fullName, status, mobileNumber,uid ,degree, sec;
+    private EditText userName, userFullname, userStatus ,userMobilePhone, userOffice;
     private Spinner majorSpinner;
     private Button updateAccountBtn, clearBtn;
     private CircleImageView userProfileImg;
@@ -59,32 +56,19 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.activity_setting_teacher);
 
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         settingsUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
         userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
-        mToolbar = (Toolbar) findViewById(R.id.settings_toolbar);
+        IntializeFields();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("ตั้งค่า");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        uid = (EditText) findViewById(R.id.settings_uid);
-        userName = (EditText) findViewById(R.id.settings_username);
-        fullName = (EditText) findViewById(R.id.settings_fullname);
-        majorSpinner = (Spinner) findViewById(R.id.settings_major_spinner);
-        status = (EditText) findViewById(R.id.settings_status);
-        mobileNumber = (EditText) findViewById(R.id.settings_phone);
-        degree = (EditText) findViewById(R.id.setting_degree);
-        sec = (EditText) findViewById(R.id.setting_sec);
-        userProfileImg = (CircleImageView) findViewById(R.id.settings_profile_image);
-        updateAccountBtn = (Button) findViewById(R.id.setting_update_btn);
-        clearBtn = (Button) findViewById(R.id.setting_clear);
-
         loadingBar = new ProgressDialog(this);
-
         loadData();
 
         clearBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +94,7 @@ public class SettingActivity extends AppCompatActivity {
                 startActivityForResult(galleryIntent, Gallery_Pick );
             }
         });
+
     }
 
     @Override
@@ -143,7 +128,7 @@ public class SettingActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(SettingActivity.this,"บันทึกรูปภาพเสร็จสิ้น", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SettingTeacherActivity.this,"บันทึกรูปภาพเสร็จสิ้น", Toast.LENGTH_SHORT).show();
                             Task<Uri> result = task.getResult().getMetadata().getReference().getDownloadUrl();
 
                             result.addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -156,16 +141,16 @@ public class SettingActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if(task.isSuccessful()){
-                                                        Intent selfIntent = new Intent(SettingActivity.this, SettingActivity.class);
+                                                        Intent selfIntent = new Intent(SettingTeacherActivity.this, SettingTeacherActivity.class);
                                                         startActivity(selfIntent);
                                                         finish();
 
-                                                        Toast.makeText(SettingActivity.this,"Profile image stored to firebase successfully...", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(SettingTeacherActivity.this,"Profile image stored to firebase successfully...", Toast.LENGTH_SHORT).show();
                                                         loadingBar.dismiss();
                                                     }
                                                     else {
                                                         String message = task.getException().getMessage();
-                                                        Toast.makeText(SettingActivity.this,"เกิดเหตุขัดข้อง: " +message, Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(SettingTeacherActivity.this,"เกิดเหตุขัดข้อง: " +message, Toast.LENGTH_SHORT).show();
                                                         loadingBar.dismiss();
                                                     }
 
@@ -187,13 +172,11 @@ public class SettingActivity extends AppCompatActivity {
 
     private void validateAccountInfo() {
         String username = userName.getText().toString();
-        String userfullname = fullName.getText().toString();
-        String userstatus = status.getText().toString();
-        String userid = uid.getText().toString();
-        String usermobile = mobileNumber.getText().toString();
+        String userfullname = userFullname.getText().toString();
+        String userstatus = userStatus.getText().toString();
+        String usermobile = userMobilePhone.getText().toString();
         String usermajor = majorSpinner.getSelectedItem().toString();
-        String userdegree = degree.getText().toString();
-        String usersec = sec.getText().toString();
+        String useroffice = userOffice.getText().toString();
 
         if(TextUtils.isEmpty(username)){
             Toast.makeText(this, "กรุณาชื่อโปรไฟล์", Toast.LENGTH_SHORT).show();
@@ -201,58 +184,72 @@ public class SettingActivity extends AppCompatActivity {
         else if(TextUtils.isEmpty(userfullname)){
             Toast.makeText(this, "กรุณากรอกชื่อ-นามสกุล", Toast.LENGTH_SHORT).show();
         }
-        else if(TextUtils.isEmpty(userid)){
-            Toast.makeText(this, "กรุณากรอกรหัสนักศึกษา", Toast.LENGTH_SHORT).show();
-        }
         else if(TextUtils.isEmpty(usermajor)){
             Toast.makeText(this, "กรุณาเลือกสาขา", Toast.LENGTH_SHORT).show();
-        }
-        else if(TextUtils.isEmpty(userdegree)){
-            Toast.makeText(this, "กรุณากรอกชั้นปี", Toast.LENGTH_SHORT).show();
-        }
-        else if(TextUtils.isEmpty(usersec)){
-            Toast.makeText(this, "กรุณากรอกเซค", Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(usermobile)){
             Toast.makeText(this, "กรุณากรอกเบอร์โทรศัพท์", Toast.LENGTH_SHORT).show();
         }
-        else{
+        else if(TextUtils.isEmpty(useroffice)){
+            Toast.makeText(this, "กรุณากรอกโต๊ะทำงาน", Toast.LENGTH_SHORT).show();
+        }else {
             loadingBar.setTitle("กำลังบันทึกข้อมูล");
             loadingBar.setMessage("กรุณารอสักครู่กำลังบันทึกข้อมูลของคุณ...");
             loadingBar.setCanceledOnTouchOutside(true);
             loadingBar.show();
-
-            updateAccountInfo(username, userfullname, userstatus, userid, usermobile, usermajor, userdegree, usersec );
+            updateAccountInfo(username, userfullname, userstatus, usermobile, usermajor,  useroffice );
         }
-
-
 
     }
 
-    private void loadData(){
+    private void updateAccountInfo(String username, String userfullname, String userstatus, String usermobile, String usermajor, String useroffice) {
+        HashMap userMap = new HashMap();
+        userMap.put("username", username);
+        userMap.put("fullname", userfullname);
+        userMap.put("major", usermajor);
+        userMap.put("mobilenumber", usermobile);
+        userMap.put("status", userstatus);
+        userMap.put("office", useroffice);
+        settingsUserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    sendUserToProfileActivity();
+                    Toast.makeText(SettingTeacherActivity.this, "ช้อมูลบันทึกเเสร็จสิ้น",Toast.LENGTH_LONG).show();
+                    loadingBar.dismiss();
+                }
+                else{
+                    String message = task.getException().getMessage();
+                    Toast.makeText(SettingTeacherActivity.this, "Error Occured: "+message, Toast.LENGTH_SHORT).show();
+                    loadingBar.dismiss();
+                }
+            }
+        });
+    }
+
+    private void loadData() {
         settingsUserRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
-                    String myUid = dataSnapshot.child("uid").getValue().toString();
                     String myUserName = dataSnapshot.child("username").getValue().toString();
                     String myFullName = dataSnapshot.child("fullname").getValue().toString();
                     String myMajor = dataSnapshot.child("major").getValue().toString();
                     String myMobileNumber = dataSnapshot.child("mobilenumber").getValue().toString();
                     String myStatus = dataSnapshot.child("status").getValue().toString();
-                    String myDegree = dataSnapshot.child("degree").getValue().toString();
-                    String mySec = dataSnapshot.child("sec").getValue().toString();
+                    String myOffice = dataSnapshot.child("office").getValue().toString();
 
                     String[] major = getResources().getStringArray(R.array.major);
-                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(SettingActivity.this,
+                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(SettingTeacherActivity.this,
                             R.layout.support_simple_spinner_dropdown_item, major);
 
-
                     Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfileImg);
-                    uid.setText(myUid);
                     userName.setText(myUserName);
-                    fullName.setText(myFullName);
+                    userFullname.setText(myFullName);
+                    userStatus.setText(myStatus);
+                    userMobilePhone.setText(myMobileNumber);
+                    userOffice.setText(myOffice);
                     majorSpinner.setAdapter(adapter);
                     if(myMajor.equals("เคมี")){
                         majorSpinner.setSelection(1);
@@ -271,10 +268,6 @@ public class SettingActivity extends AppCompatActivity {
                     }else {
                         majorSpinner.setSelection(0);
                     }
-                    status.setText(myStatus);
-                    mobileNumber.setText(myMobileNumber);
-                    degree.setText(myDegree);
-                    sec.setText(mySec);
                 }
             }
 
@@ -285,36 +278,21 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
+    private void IntializeFields() {
+        mToolbar = (Toolbar) findViewById(R.id.teacher_settings_toolbar);
+        userName = (EditText) findViewById(R.id.teacher_settings_username);
+        userFullname = (EditText) findViewById(R.id.teacher_settings_fullname);
+        userStatus = (EditText) findViewById(R.id.teacher_settings_status);
+        majorSpinner = (Spinner) findViewById(R.id.teacher_settings_major_spinner);
+        userMobilePhone = (EditText) findViewById(R.id.teacher_settings_phone);
+        userProfileImg = (CircleImageView) findViewById(R.id.teacher_settings_profile_image);
+        userOffice = (EditText) findViewById(R.id.teacher_settings_office);
+        updateAccountBtn = (Button) findViewById(R.id.teacher_settings_update_btn);
+        clearBtn = (Button) findViewById(R.id.teacher_settings_clear);
 
-    private void updateAccountInfo(String username, String userfullname, String userstatus, String userid, String usermobile, String usermajor, String userdegree, String usersec) {
-        HashMap userMap = new HashMap();
-        userMap.put("uid",userid);
-        userMap.put("username", username);
-        userMap.put("fullname", userfullname);
-        userMap.put("major", usermajor);
-        userMap.put("mobilenumber", usermobile);
-        userMap.put("status", userstatus);
-        userMap.put("degree", userdegree);
-        userMap.put("sec", usersec);
-        settingsUserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()){
-                    sendUserToProfileActivity();
-                    Toast.makeText(SettingActivity.this, "ช้อมูลบันทึกเเสร็จสิ้น",Toast.LENGTH_LONG).show();
-                    loadingBar.dismiss();
-                }
-                else{
-                    String message = task.getException().getMessage();
-                    Toast.makeText(SettingActivity.this, "Error Occured: "+message, Toast.LENGTH_SHORT).show();
-                    loadingBar.dismiss();
-                }
-            }
-        });
     }
-
     private void sendUserToProfileActivity(){
-        Intent profileIntent = new Intent(SettingActivity.this, ProfileActivity.class);
+        Intent profileIntent = new Intent(SettingTeacherActivity.this, TeacherProfileActivity.class);
         startActivity(profileIntent);
         finish();
     }

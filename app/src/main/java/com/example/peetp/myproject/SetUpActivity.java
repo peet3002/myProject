@@ -8,14 +8,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -46,16 +50,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SetUpActivity extends AppCompatActivity {
 
-    private EditText fullname, name, major, mobileNumber, id, email;
+    private EditText fullname, name, major, mobileNumber, id, degree, sec, adviser;
 
-    private Button saveInformationbutton;
+    private Button saveInformationbutton, clearButton;
     private CircleImageView profileImage;
     private ProgressDialog loadingBar;
     private ImageButton search;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference userRef, stdRef;
+    private DatabaseReference userRef, stdRef, teacherRef;
     private StorageReference userProfileImageRef;
+
+
+    private int textlength = 0;
 
     String currentUserId;
     final static int Gallery_Pick = 1;
@@ -68,6 +75,7 @@ public class SetUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
+        teacherRef = FirebaseDatabase.getInstance().getReference().child("Teacher");
         userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
         id = (EditText) findViewById(R.id.setup_id);
@@ -76,13 +84,18 @@ public class SetUpActivity extends AppCompatActivity {
         name = (EditText) findViewById(R.id.setup_name);
         major = (EditText) findViewById(R.id.setup_major);
         mobileNumber = (EditText) findViewById(R.id.setup_mobile);
-//        email = (EditText) findViewById(R.id.setup_email);
+        degree = (EditText) findViewById(R.id.setup_degree);
+        sec = (EditText) findViewById(R.id.setup_sec);
+        adviser = (EditText) findViewById(R.id.setup_adviser);
+
         saveInformationbutton = (Button) findViewById(R.id.setup_save_btn);
+        clearButton = (Button) findViewById(R.id.setup_clear);
         profileImage = (CircleImageView) findViewById(R.id.setup_profile_image);
 
         String simple = "ชื่อโปรไฟล์";
         String colored = "*";
         SpannableStringBuilder builder = new SpannableStringBuilder();
+
 
         builder.append(simple);
         int start = builder.length();
@@ -93,31 +106,83 @@ public class SetUpActivity extends AppCompatActivity {
 
         name.setHint(builder);
 
+        id.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = id.getText().toString();
+                textlength = id.getText().length();
+
+                if(textlength == 13){
+                    if(!text.contains("-")){
+                        id.setText(new StringBuilder(text).insert(text.length() - 1, "-").toString());
+                        id.setSelection(id.getText().length());
+                    }
+                    }
+                }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String txtSearch = id.getText().toString();
-                stdRef = FirebaseDatabase.getInstance().getReference().child("Students").child(txtSearch);
-                stdRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
-                            String userFullName = dataSnapshot.child("fullname").getValue().toString();
-                            String userMajor = dataSnapshot.child("major").getValue().toString();
+                String txtMajor = major.getText().toString();
+                String txtDegree = degree.getText().toString();
+                String txtSec = sec.getText().toString();
 
-                            major.setText(userMajor);
-                            fullname.setText(userFullName);
+                if (!TextUtils.isEmpty(txtSearch)) {
+                    stdRef = FirebaseDatabase.getInstance().getReference().child("Students").child(txtSearch);
+                    stdRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                String userFullName = dataSnapshot.child("fullname").getValue().toString();
+                                String userMajor = dataSnapshot.child("major").getValue().toString();
+                                String userDegree = dataSnapshot.child("degree").getValue().toString();
+                                String userSec = dataSnapshot.child("sec").getValue().toString();
 
+                                major.setText(userMajor);
+                                fullname.setText(userFullName);
+                                degree.setText(userDegree);
+                                sec.setText(userSec);
+
+                                teacherRef.child(userMajor).child(userDegree).child(userSec)
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                String userTeacher = dataSnapshot.child("fullname").getValue().toString();
+
+                                                adviser.setText(userTeacher);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                            }
+                            else{
+                                Toast.makeText(SetUpActivity.this, "ไม่พบข้อมูลรหัสนักศีกษา",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                    });
+                }
             }
         });
 
@@ -129,6 +194,21 @@ public class SetUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveAccountSetupInformation();
+            }
+        });
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                name.getText().clear();
+                fullname.getText().clear();
+                id.getText().clear();
+                major.getText().clear();
+                degree.getText().clear();
+                sec.getText().clear();
+                adviser.getText().clear();
+                mobileNumber.getText().clear();
+
             }
         });
 
@@ -150,9 +230,6 @@ public class SetUpActivity extends AppCompatActivity {
                     if(dataSnapshot.hasChild("profileimage")){
                         String image = dataSnapshot.child("profileimage").getValue().toString();
                         Picasso.get().load(image).placeholder(R.drawable.profile).into(profileImage);
-                    }
-                    else{
-                        Toast.makeText(SetUpActivity.this, "Please select Profile image first",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -245,16 +322,18 @@ public class SetUpActivity extends AppCompatActivity {
         String userMajor = major.getText().toString();
         String userMobileNumber = mobileNumber.getText().toString();
         String userId = id.getText().toString();
-//        String userEmail = email.getText().toString();
+        String userDegree = degree.getText().toString();
+        String userSec = sec.getText().toString();
 
-        if(TextUtils.isEmpty(userId)){
+
+        if(TextUtils.isEmpty(userName)){
+            Toast.makeText(this, "กรุณาชื่อโปรไฟล์", Toast.LENGTH_SHORT).show();
+        }
+        else if(TextUtils.isEmpty(userId)){
             Toast.makeText(this, "กรุณากรอกรหัสนักศึกษา", Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(userFullName)){
             Toast.makeText(this, "กรุณากรอกชื่อ-นามสกุล", Toast.LENGTH_SHORT).show();
-        }
-        else if(TextUtils.isEmpty(userName)){
-            Toast.makeText(this, "กรุณาชื่อโปรไฟล์", Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(userMajor)){
             Toast.makeText(this, "กรุณากรอกสาขา", Toast.LENGTH_SHORT).show();
@@ -262,24 +341,24 @@ public class SetUpActivity extends AppCompatActivity {
         else if(TextUtils.isEmpty(userMobileNumber)){
             Toast.makeText(this, "กรุณากรอกเบอร์โทรศัพท์", Toast.LENGTH_SHORT).show();
         }
-//        else if(TextUtils.isEmpty(userEmail)){
-//            Toast.makeText(this, "กรุณากรอกอีเมล์", Toast.LENGTH_SHORT).show();
-//        }
+
         else{
             loadingBar.setTitle("กำลังบันทึกข้อมูล");
             loadingBar.setMessage("กรุณารอสักครู่กำลังบันทึกข้อมูลของคุณ...");
             loadingBar.show();
             loadingBar.setCanceledOnTouchOutside(true);
 
-            HashMap userMap = new HashMap();
+            final HashMap userMap = new HashMap();
             userMap.put("uid",userId);
             userMap.put("username", userName);
             userMap.put("fullname", userFullName);
             userMap.put("major", userMajor);
             userMap.put("mobilenumber", userMobileNumber);
-//            userMap.put("email",  userEmail);
+            userMap.put("degree",userDegree);
+            userMap.put("sec", userSec);
             userMap.put("status", "Hey there i am using Test");
             userMap.put("usertype","student");
+
             userRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
