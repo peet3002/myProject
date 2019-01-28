@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.peetp.myproject.model.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,25 +57,17 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
-                    String myUid = dataSnapshot.child("uid").getValue().toString();
-                    String myUserName = dataSnapshot.child("username").getValue().toString();
-                    String myFullName = dataSnapshot.child("fullname").getValue().toString();
-                    String myMajor = dataSnapshot.child("major").getValue().toString();
-                    String myMobileNumber = dataSnapshot.child("mobilenumber").getValue().toString();
-                    String myStatus = dataSnapshot.child("status").getValue().toString();
-                    String myDegree = dataSnapshot.child("degree").getValue().toString();
-                    String mySec = dataSnapshot.child("sec").getValue().toString();
+                    Users data = dataSnapshot.getValue(Users.class);
 
-                    Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfileImg);
-                    userUid.setText(myUid);
-                    userMajor.setText(myMajor);
-                    userName.setText(myUserName);
-                    userFullname.setText(myFullName);
-                    userStatus.setText(myStatus);
-                    userMobilePhone.setText(myMobileNumber);
-                    userDegree.setText(myDegree);
-                    userSec.setText(mySec);
+                    Picasso.get().load(data.getProfileimage()).placeholder(R.drawable.profile).into(userProfileImg);
+                    userUid.setText(data.getUid());
+                    userMajor.setText(data.getMajor());
+                    userName.setText(data.getUsername());
+                    userFullname.setText(data.getFullname());
+                    userStatus.setText(data.getStatus());
+                    userMobilePhone.setText(data.getMobilenumber());
+                    userDegree.setText(data.getDegree());
+                    userSec.setText(data.getSec());
                 }
             }
 
@@ -93,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void sendUserToSettingActivity() {
-        Intent settingIntent = new Intent(ProfileActivity.this, SettingActivity.class);
-        startActivity(settingIntent);
+        Intent intent = new Intent(ProfileActivity.this, SettingActivity.class);
+        startActivity(intent);
     }
 }

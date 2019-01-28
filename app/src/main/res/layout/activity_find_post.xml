@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FindPostActivity">
+
+    <include
+        android:id="@+id/main_page_toolbar"
+        layout="@layout/app_bar_layout">
+    </include>
+    <include layout="@layout/search_toolbar_layout"/>
+
+    <TextView
+        android:id="@+id/layout_header"
+        android:text="ผลการค้นหา"
+        android:paddingLeft="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_page_toolbar"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/colorWhite"/>
+
+    <FrameLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_header"
+        android:background="@color/colorWhite">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/all_users_post_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="203dp"
+        android:text="ไม่พบการค้นหา" />
+
+
+
+
+</RelativeLayout>

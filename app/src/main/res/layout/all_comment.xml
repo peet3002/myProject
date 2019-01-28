@@ -53,8 +53,15 @@
         android:layout_alignBottom="@+id/comment_username"
         android:layout_toEndOf="@+id/text"
         android:text="12-November-2017"
-
         android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/comment_user_profile"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorTextBlack">
+    </TextView>
 
 
 </RelativeLayout>

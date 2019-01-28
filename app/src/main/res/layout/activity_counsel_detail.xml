@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CounselDetailActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/counsel_detail_toolbar"
+        layout="@layout/app_bar_layout">
+    </include>
+
+        <ImageButton
+            android:id="@+id/counsel_detail_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/colorPrimary"
+            android:baselineAlignBottom="false"
+            android:contentDescription="delete"
+            android:focusableInTouchMode="false"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
+            />
+
+        <LinearLayout
+            android:id="@+id/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/counsel_detail_toolbar"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="รายละเอียด : ประเภทปัญหา"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/counsel_detail_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ปัญหาการเรียน"
+                android:layout_marginStart="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:background="@drawable/bg_chat_me"
+                android:textColor="@color/colorWhite"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/counsel_detail_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorTextBlack"
+            android:text=""
+            android:layout_below="@+id/layout_header"/>
+
+        <CheckBox
+            android:id="@+id/counsel_detail_chkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="ได้รับการแก้ไขแล้ว"
+            android:buttonTint="@color/colorPrimary"
+            android:layout_below="@+id/counsel_detail_view"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/line_speac"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/grey"
+            android:layout_below="@id/counsel_detail_chkbox">
+        </TextView>
+
+        <FrameLayout
+            android:id="@+id/main_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/line_speac">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/counsel_comment_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/layout_footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="7dp"
+            android:text="ตอบกลับบันทึกการให้คำปรึกษา"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_below="@+id/main_container"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/counsel_detail_edit"
+            android:background="@drawable/edit_text"
+            android:layout_below="@+id/layout_footer"
+            android:hint="ข้อความ....."
+            android:textSize="16sp"
+            android:textColor="@color/colorTextBlack"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="top|left"
+            android:lines="10"
+            android:minLines="3"
+            android:scrollHorizontally="false"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:padding="15dp"
+            android:textColorHint="@color/colorTextInfo"
+          />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/counsel_detail_edit"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/counsel_detail_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_weight="0.5"
+                android:text="บันทึก"
+                android:background="@drawable/button"
+                android:textColor="@color/colorWhite"/>
+            <Button
+                android:id="@+id/counsel_detail_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="ยกเลิก"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_chat_you"
+                android:textColor="@color/colorPrimaryDark"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</ScrollView>

@@ -17,6 +17,7 @@ import android.widget.Gallery;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.peetp.myproject.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -33,7 +34,9 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,7 +56,7 @@ public class SettingActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private StorageReference userProfileImageRef;
 
-    private String currentUserId;
+    private String currentUserId, saveCurrentTime, saveCurrentDate;
     final static int Gallery_Pick = 1;
 
     @Override
@@ -70,6 +73,7 @@ public class SettingActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("ตั้งค่า");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         uid = (EditText) findViewById(R.id.settings_uid);
         userName = (EditText) findViewById(R.id.settings_username);
@@ -82,6 +86,15 @@ public class SettingActivity extends AppCompatActivity {
         userProfileImg = (CircleImageView) findViewById(R.id.settings_profile_image);
         updateAccountBtn = (Button) findViewById(R.id.setting_update_btn);
         clearBtn = (Button) findViewById(R.id.setting_clear);
+
+        Calendar calFordDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyymmdd");
+        saveCurrentDate = currentDate.format(calFordDate.getTime());
+
+        Calendar calFordTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("HHmmss");
+        saveCurrentTime = currentTime.format(calFordTime.getTime());
+
 
         loadingBar = new ProgressDialog(this);
 
@@ -137,7 +150,7 @@ public class SettingActivity extends AppCompatActivity {
 
                 Uri resultUri = result.getUri();
 
-                StorageReference filePath = userProfileImageRef.child(currentUserId + ".jpg");
+                StorageReference filePath = userProfileImageRef.child(currentUserId +  saveCurrentDate + saveCurrentTime + ".jpg");
 
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -159,7 +172,6 @@ public class SettingActivity extends AppCompatActivity {
                                                         Intent selfIntent = new Intent(SettingActivity.this, SettingActivity.class);
                                                         startActivity(selfIntent);
                                                         finish();
-
                                                         Toast.makeText(SettingActivity.this,"Profile image stored to firebase successfully...", Toast.LENGTH_SHORT).show();
                                                         loadingBar.dismiss();
                                                     }
@@ -222,37 +234,51 @@ public class SettingActivity extends AppCompatActivity {
             loadingBar.setCanceledOnTouchOutside(true);
             loadingBar.show();
 
-            updateAccountInfo(username, userfullname, userstatus, userid, usermobile, usermajor, userdegree, usersec );
+            HashMap userMap = new HashMap();
+            userMap.put("uid",userid);
+            userMap.put("username", username);
+            userMap.put("fullname", userfullname);
+            userMap.put("major", usermajor);
+            userMap.put("mobilenumber", usermobile);
+            userMap.put("status", userstatus);
+            userMap.put("degree", userdegree);
+            userMap.put("sec", usersec);
+            settingsUserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(SettingActivity.this, "ช้อมูลบันทึกเเสร็จสิ้น",Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
+                    }
+                    else{
+                        String message = task.getException().getMessage();
+                        Toast.makeText(SettingActivity.this, "Error Occured: "+message, Toast.LENGTH_SHORT).show();
+                        loadingBar.dismiss();
+                    }
+                }
+            });
         }
-
 
 
     }
 
     private void loadData(){
-        settingsUserRef.addValueEventListener(new ValueEventListener() {
+        settingsUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
-                    String myUid = dataSnapshot.child("uid").getValue().toString();
-                    String myUserName = dataSnapshot.child("username").getValue().toString();
-                    String myFullName = dataSnapshot.child("fullname").getValue().toString();
-                    String myMajor = dataSnapshot.child("major").getValue().toString();
-                    String myMobileNumber = dataSnapshot.child("mobilenumber").getValue().toString();
-                    String myStatus = dataSnapshot.child("status").getValue().toString();
-                    String myDegree = dataSnapshot.child("degree").getValue().toString();
-                    String mySec = dataSnapshot.child("sec").getValue().toString();
+                    Users data = dataSnapshot.getValue(Users.class);
+                    String myMajor = data.getMajor();
 
                     String[] major = getResources().getStringArray(R.array.major);
                     final ArrayAdapter<String> adapter = new ArrayAdapter<String>(SettingActivity.this,
                             R.layout.support_simple_spinner_dropdown_item, major);
 
 
-                    Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfileImg);
-                    uid.setText(myUid);
-                    userName.setText(myUserName);
-                    fullName.setText(myFullName);
+                    Picasso.get().load(data.getProfileimage()).placeholder(R.drawable.profile).into(userProfileImg);
+                    uid.setText(data.getUid());
+                    userName.setText(data.getUsername());
+                    fullName.setText(data.getFullname());
                     majorSpinner.setAdapter(adapter);
                     if(myMajor.equals("เคมี")){
                         majorSpinner.setSelection(1);
@@ -271,10 +297,10 @@ public class SettingActivity extends AppCompatActivity {
                     }else {
                         majorSpinner.setSelection(0);
                     }
-                    status.setText(myStatus);
-                    mobileNumber.setText(myMobileNumber);
-                    degree.setText(myDegree);
-                    sec.setText(mySec);
+                    status.setText(data.getStatus());
+                    mobileNumber.setText(data.getMobilenumber());
+                    degree.setText(data.getDegree());
+                    sec.setText(data.getSec());
                 }
             }
 
@@ -283,39 +309,5 @@ public class SettingActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-
-    private void updateAccountInfo(String username, String userfullname, String userstatus, String userid, String usermobile, String usermajor, String userdegree, String usersec) {
-        HashMap userMap = new HashMap();
-        userMap.put("uid",userid);
-        userMap.put("username", username);
-        userMap.put("fullname", userfullname);
-        userMap.put("major", usermajor);
-        userMap.put("mobilenumber", usermobile);
-        userMap.put("status", userstatus);
-        userMap.put("degree", userdegree);
-        userMap.put("sec", usersec);
-        settingsUserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()){
-                    sendUserToProfileActivity();
-                    Toast.makeText(SettingActivity.this, "ช้อมูลบันทึกเเสร็จสิ้น",Toast.LENGTH_LONG).show();
-                    loadingBar.dismiss();
-                }
-                else{
-                    String message = task.getException().getMessage();
-                    Toast.makeText(SettingActivity.this, "Error Occured: "+message, Toast.LENGTH_SHORT).show();
-                    loadingBar.dismiss();
-                }
-            }
-        });
-    }
-
-    private void sendUserToProfileActivity(){
-        Intent profileIntent = new Intent(SettingActivity.this, ProfileActivity.class);
-        startActivity(profileIntent);
-        finish();
     }
 }

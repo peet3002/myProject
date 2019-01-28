@@ -1,7 +1,7 @@
 package com.example.peetp.myproject.model;
 
 public class Comments {
-    public String comment, date, profileimage, time, uid, username;
+    private String comment, date, profileimage, time, uid, username;
 
     public Comments(){
 

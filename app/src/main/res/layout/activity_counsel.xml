@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CounselActivity">
+
+    <include
+        android:id="@+id/counsel_bar_layout"
+        layout="@layout/app_bar_layout" />
+
+    <LinearLayout
+        android:id="@+id/layout_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/counsel_bar_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:text="หมวดหมู่"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
+        <Spinner
+            android:id="@+id/counsel_type"
+            android:background="@drawable/spinner_background"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="0.9"
+            android:layout_marginRight="99dp">
+        </Spinner>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_type"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="รายละเอียด"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/counsel_detail"
+            android:background="@drawable/edit_text"
+            android:ems="10"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="top|left"
+            android:lines="20"
+            android:minLines="10"
+            android:scrollHorizontally="false"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:padding="15dp"
+            android:textColorHint="@color/colorTextInfo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_body"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/create_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_weight="0.5"
+            android:text="สร้างกระทู้"
+            android:background="@drawable/button"
+            android:textColor="@color/colorWhite"/>
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="ยกเลิก"
+            android:layout_weight="0.5"
+            android:background="@drawable/bg_chat_you"
+            android:textColor="@color/colorPrimaryDark"/>
+    </LinearLayout>
+</RelativeLayout>

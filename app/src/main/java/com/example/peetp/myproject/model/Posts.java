@@ -1,13 +1,13 @@
 package com.example.peetp.myproject.model;
 
 public class Posts {
-    public String uid, time, date, postimage, profileimage, description, username ;
+    private String uid, time, date, postimage, profileimage, description, username, postheader, posttype;
 
     public Posts(){
 
     }
 
-    public Posts(String uid, String time, String date, String postimage, String profileimage, String description, String username) {
+    public Posts(String uid, String time, String date, String postimage, String profileimage, String description, String username, String postheader, String posttype) {
         this.uid = uid;
         this.time = time;
         this.date = date;
@@ -15,6 +15,8 @@ public class Posts {
         this.profileimage = profileimage;
         this.description = description;
         this.username = username;
+        this.postheader = postheader;
+        this.posttype = posttype;
     }
 
     public String getUid() {
@@ -71,5 +73,21 @@ public class Posts {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPostheader() {
+        return postheader;
+    }
+
+    public void setPostheader(String postheader) {
+        this.postheader = postheader;
+    }
+
+    public String getPosttype() {
+        return posttype;
+    }
+
+    public void setPosttype(String posttype) {
+        this.posttype = posttype;
     }
 }

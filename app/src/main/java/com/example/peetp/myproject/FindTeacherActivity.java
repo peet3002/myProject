@@ -39,6 +39,7 @@ public class FindTeacherActivity extends AppCompatActivity {
 
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
+
         searchTeacher = (EditText) findViewById(R.id.find_search);
         searchBtn = (ImageButton) findViewById(R.id.find_btn);
         searchList = (RecyclerView) findViewById(R.id.find_list);
@@ -58,7 +59,7 @@ public class FindTeacherActivity extends AppCompatActivity {
 
     private void firebaseUserSearch(String searchText) {
 
-        Query fQuery3 = userRef.orderByChild("type_username").startAt("teacher_" + searchText).endAt("teacher_" + searchText + "\uf8ff");
+        Query fQuery3 = userRef.orderByChild("type_fullname").startAt("teacher_" + searchText).endAt("teacher_" + searchText + "\uf8ff");
 
 
         FirebaseRecyclerOptions<Users> options =

@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,18 +17,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WelcomeActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <service android:name=".videocall.SinchService" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+        <activity android:name=".WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".StartPageActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity">
-        </activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".SetUpActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
@@ -46,6 +51,54 @@
         <activity
             android:name=".SettingTeacherActivity"
             android:parentActivityName=".TeacherProfileActivity" />
+        <activity android:name=".FindPostActivity" />
+        <activity android:name=".CounselActivity" />
+        <activity
+            android:name=".CounselListActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".CounselDetailActivity"
+            android:parentActivityName=".CounselListActivity" />
+        <activity android:name=".CounselTeacherListActivity" />
+        <activity
+            android:name=".CounselEditedActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".CounselNotActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".AdviserProfileActivity" />
+        <activity
+            android:name=".MessageListActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <service
+            android:name=".notifications.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".notifications.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".StaticActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".ResultStaticActivity" />
+        <activity android:name=".videocall.CallScreenActivity" />
+        <activity
+            android:name=".videocall.IncomingCallScreenActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity android:name=".call.VoiceCallScreenActivity" />
+        <activity android:name=".call.VoiceIncomingCallScreenActivity"></activity>
     </application>
 
 </manifest>

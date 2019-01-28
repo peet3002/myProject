@@ -3,16 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_request"
+        android:id="@+id/action_chat"
         android:enabled="true"
-        android:icon="@drawable/ic_add_white"
-        android:title="ส่งคำขอ"
+        android:icon="@drawable/ic_textsms_white"
+        android:title="แชท"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_cancel"
+        android:id="@+id/action_call"
         android:enabled="true"
-        android:icon="@drawable/ic_cancel_white"
-        android:title="ยกเลิกคำขอ"
+        android:icon="@drawable/ic_call_white"
+        android:title="โทร"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_videocall"
+        android:enabled="true"
+        android:icon="@drawable/ic_videocall_white"
+        android:title="วิดิโอคอล"
+        app:showAsAction="ifRoom" />
+
 
 </menu>

@@ -1,12 +1,14 @@
 package com.example.peetp.myproject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +27,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,7 +47,8 @@ public class CommentsActivity extends AppCompatActivity {
     private DatabaseReference usersRef, postsRef;
     private FirebaseAuth mAuth;
 
-    private String Post_Key, current_user_id;
+    private int year;
+    private String Post_Key, current_user_id, userName, comment, userProfileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +66,6 @@ public class CommentsActivity extends AppCompatActivity {
         commentText = (EditText) findViewById(R.id.cm_add_comment);
         postCommentBtn = (ImageButton) findViewById(R.id.cm_post);
 
-        final InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-
 
         commentsList = (RecyclerView) findViewById(R.id.cm_recycler_view);
         commentsList.setHasFixedSize(true);
@@ -76,25 +79,7 @@ public class CommentsActivity extends AppCompatActivity {
         postCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usersRef.child(current_user_id).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
-                            String userName = dataSnapshot.child("username").getValue().toString();
-                            String userProfileImage = dataSnapshot.child("profileimage").getValue().toString();
-
-                            validateComment(userName, userProfileImage);
-                            commentText.setText("");
-                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-
-                        }
-                    }
-                    
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                commentEvents();
             }
         });
     }
@@ -122,6 +107,8 @@ public class CommentsActivity extends AppCompatActivity {
                 CommentsViewHolder viewHolder = new CommentsViewHolder(view);
                 return viewHolder;
             }
+
+
         };
 
         commentsList.setAdapter(firebaseRecyclerAdapter);
@@ -143,26 +130,57 @@ public class CommentsActivity extends AppCompatActivity {
         }
     }
 
-    private void validateComment(String userName, String userProfileImage) {
-        String comment = commentText.getText().toString();
+    private void commentEvents() {
+        final InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        usersRef.child(current_user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    userName = dataSnapshot.child("username").getValue().toString();
+                    userProfileImage = dataSnapshot.child("profileimage").getValue().toString();
+                    validateComments(userName, userProfileImage);
+                    commentText.setText("");
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-        if (TextUtils.isEmpty(comment)){
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void validateComments(String userName, String userProfileImage) {
+        comment = commentText.getText().toString();
+
+        if (TextUtils.isEmpty(comment)) {
             Toast.makeText(this, "กรุณากรอกคอมเมนส์", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             Calendar calFordDate = Calendar.getInstance();
-            SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
+            SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM");
             final String saveCurrentDate = currentDate.format(calFordDate.getTime());
+
+            Calendar calFordYear = Calendar.getInstance();
+            SimpleDateFormat currentYear = new SimpleDateFormat("yyyy",new Locale("th"));
+            final String saveCurrentYear = currentYear.format(calFordYear.getTime());
+            year = Integer.parseInt(saveCurrentYear);
+            year += 543;
 
             Calendar calFordTime = Calendar.getInstance();
             SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
             final String saveCurrentTime = currentTime.format(calFordDate.getTime());
 
-            final String RandomKey = current_user_id + saveCurrentDate + saveCurrentTime;
+
+            final String RandomKey = current_user_id + year + saveCurrentDate + saveCurrentTime;
+
+
 
             HashMap hashMap = new HashMap();
             hashMap.put("uid", current_user_id);
             hashMap.put("comment", comment);
-            hashMap.put("date", saveCurrentDate);
+            hashMap.put("date", saveCurrentDate + "-" +year);
             hashMap.put("time", saveCurrentTime);
             hashMap.put("username", userName);
             hashMap.put("profileimage", userProfileImage);
@@ -171,3 +189,6 @@ public class CommentsActivity extends AppCompatActivity {
         }
     }
 }
+
+
+

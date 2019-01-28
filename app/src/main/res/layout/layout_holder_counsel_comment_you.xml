@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_margin="5dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/layout_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="แสดงความคิดเห็นโดย  "
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/counsel_comment_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="peet"
+            android:textColor="@color/colorTextBlack"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/layout_header">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="แสดงความคิดเมื่อ "
+            android:textColor="@color/colorTextInfo"/>
+        <TextView
+            android:id="@+id/counsel_comment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textColor="@android:color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/counsel_comment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/counsel_comment_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_date"
+        android:textColor="@color/colorTextBlack"
+        android:text="ข้อความ"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/line_speac"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/grey"
+        android:layout_below="@id/counsel_comment_detail">
+    </TextView>
+
+
+
+
+</RelativeLayout>

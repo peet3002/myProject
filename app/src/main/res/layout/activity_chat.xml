@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/colorWhite"
     tools:context=".ChatActivity">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -12,8 +13,14 @@
         app:elevation="0dp">
         <include
             android:id="@+id/chat_toolbar"
-            layout="@layout/toolbar">
+            layout="@layout/app_bar_layout">
         </include>
     </android.support.design.widget.AppBarLayout>
-    <include layout="@layout/chat_layout" ></include>
+
+    <include
+        layout="@layout/chat_layout">
+    </include>
+
+
+
 </android.support.design.widget.CoordinatorLayout>

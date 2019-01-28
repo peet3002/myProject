@@ -1,0 +1,24 @@
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+
+        <shape
+            android:shape="rectangle">
+
+            <size
+                android:width="14dp"
+                android:height="14dp"/>
+
+            <solid
+                android:color="#00FFFFFF"/>
+        </shape>
+    </item>
+
+    <item>
+
+        <bitmap
+            android:gravity="left|right|top|bottom"
+            android:src="@drawable/tag"/>
+    </item>
+</layer-list>

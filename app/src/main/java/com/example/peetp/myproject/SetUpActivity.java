@@ -40,8 +40,11 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.xml.transform.Result;
@@ -58,11 +61,12 @@ public class SetUpActivity extends AppCompatActivity {
     private ImageButton search;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference userRef, stdRef, teacherRef;
+    private DatabaseReference userRef, usersRef, stdRef, teacherRef, adviserRef;
     private StorageReference userProfileImageRef;
 
 
-    private int textlength = 0;
+    private int textlength = 0, year;
+    private String saveCurrentDate, saveCurrentYear ,saveCurrentTime, saveCurrentDateFull;
 
     String currentUserId;
     final static int Gallery_Pick = 1;
@@ -75,7 +79,9 @@ public class SetUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         teacherRef = FirebaseDatabase.getInstance().getReference().child("Teacher");
+        adviserRef = FirebaseDatabase.getInstance().getReference().child("Adviser").child(currentUserId);
         userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
         id = (EditText) findViewById(R.id.setup_id);
@@ -91,6 +97,14 @@ public class SetUpActivity extends AppCompatActivity {
         saveInformationbutton = (Button) findViewById(R.id.setup_save_btn);
         clearButton = (Button) findViewById(R.id.setup_clear);
         profileImage = (CircleImageView) findViewById(R.id.setup_profile_image);
+
+        Calendar calFordDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyymmdd");
+        saveCurrentDateFull = currentDate.format(calFordDate.getTime());
+
+        Calendar calFordTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("HHmmss");
+        saveCurrentTime = currentTime.format(calFordTime.getTime());
 
         String simple = "ชื่อโปรไฟล์";
         String colored = "*";
@@ -142,7 +156,7 @@ public class SetUpActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(txtSearch)) {
                     stdRef = FirebaseDatabase.getInstance().getReference().child("Students").child(txtSearch);
-                    stdRef.addValueEventListener(new ValueEventListener() {
+                    stdRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
@@ -157,7 +171,7 @@ public class SetUpActivity extends AppCompatActivity {
                                 sec.setText(userSec);
 
                                 teacherRef.child(userMajor).child(userDegree).child(userSec)
-                                        .addValueEventListener(new ValueEventListener() {
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                 String userTeacher = dataSnapshot.child("fullname").getValue().toString();
@@ -223,7 +237,7 @@ public class SetUpActivity extends AppCompatActivity {
             }
         });
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -266,7 +280,7 @@ public class SetUpActivity extends AppCompatActivity {
 
                     Uri resultUri = result.getUri();
 
-                    StorageReference filePath = userProfileImageRef.child(currentUserId + ".jpg");
+                    StorageReference filePath = userProfileImageRef.child(currentUserId + saveCurrentDateFull + saveCurrentTime + ".jpg");
 
                     filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -324,6 +338,17 @@ public class SetUpActivity extends AppCompatActivity {
         String userId = id.getText().toString();
         String userDegree = degree.getText().toString();
         String userSec = sec.getText().toString();
+        String userAdviser = adviser.getText().toString();
+
+        Calendar calFordDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM");
+        saveCurrentDate = currentDate.format(calFordDate.getTime());
+
+        Calendar calFordYear = Calendar.getInstance();
+        SimpleDateFormat currentYear = new SimpleDateFormat("yyyy",new Locale("th"));
+        saveCurrentYear = currentYear.format(calFordYear.getTime());
+        year = Integer.parseInt(saveCurrentYear);
+        year += 543;
 
 
         if(TextUtils.isEmpty(userName)){
@@ -356,24 +381,60 @@ public class SetUpActivity extends AppCompatActivity {
             userMap.put("mobilenumber", userMobileNumber);
             userMap.put("degree",userDegree);
             userMap.put("sec", userSec);
+            userMap.put("key",currentUserId);
+            userMap.put("adviser", userAdviser);
             userMap.put("status", "Hey there i am using Test");
             userMap.put("usertype","student");
 
-            userRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+            final HashMap adviserMap = new HashMap();
+            adviserMap.put("date", saveCurrentDate + "-" +year);
+
+
+
+            usersRef.orderByChild("fullname").equalTo(userAdviser).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful()){
-                        SendUserToMainActivity();
-                        Toast.makeText(SetUpActivity.this, "ช้อมูลบันทึกเเสร็จสิ้น",Toast.LENGTH_LONG).show();
-                        loadingBar.dismiss();
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        String id  = dataSnapshot.getKey();
+                        String dataKeys = "";
+
+                        for (DataSnapshot child: dataSnapshot.getChildren()){
+                            //Object object = child.getKey();
+
+                            dataKeys=dataKeys+child.getKey() + "";
+                        }
+                        adviserRef.child(dataKeys).updateChildren(adviserMap);
+//                        Toast.makeText(SetUpActivity.this, dataKeys,Toast.LENGTH_SHORT).show();
+                        userRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(@NonNull Task task) {
+                                if (task.isSuccessful()){
+                                    SendUserToMainActivity();
+                                    Toast.makeText(SetUpActivity.this, "ช้อมูลบันทึกเเสร็จสิ้น",Toast.LENGTH_LONG).show();
+                                    loadingBar.dismiss();
+                                }
+                                else{
+                                    String message = task.getException().getMessage();
+                                    Toast.makeText(SetUpActivity.this, "Error Occured: "+message, Toast.LENGTH_SHORT).show();
+                                    loadingBar.dismiss();
+                                }
+                            }
+                        });
+
                     }
                     else{
-                        String message = task.getException().getMessage();
-                        Toast.makeText(SetUpActivity.this, "Error Occured: "+message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetUpActivity.this, "ข้ออภัย: อาจารย์ที่ปรึกษาของท่านไม่มีชื่ออยู่ในระบบ", Toast.LENGTH_SHORT).show();
                         loadingBar.dismiss();
                     }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
                 }
             });
+
         }
 
     }

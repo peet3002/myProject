@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdviserProfileActivity">
+
+    <RelativeLayout
+        android:id="@+id/adv_profile_blackgroud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:id="@+id/glad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/adv_person_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/profile"
+                app:civ_border_color="@color/colorWhite"
+                app:civ_border_width="5dp"/>
+            <ImageView
+                android:id="@+id/img_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:src="@drawable/circle_online"
+                android:layout_below="@+id/adv_person_image"
+                android:layout_marginLeft="-40dp"
+                android:layout_marginTop="-30dp"
+                android:layout_toRightOf="@+id/adv_person_image"
+                android:layout_toEndOf="@+id/adv_person_image"/>
+            <ImageView
+                android:id="@+id/img_off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:src="@drawable/circle_offline"
+                android:layout_below="@+id/adv_person_image"
+                android:layout_marginLeft="-40dp"
+                android:layout_marginTop="-30dp"
+                android:layout_toRightOf="@+id/adv_person_image"
+                android:layout_toEndOf="@+id/adv_person_image"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/adv_person_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/glad"
+            android:layout_centerHorizontal="true"
+            android:text="username"
+            android:textSize="32sp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorWhite"/>
+
+        <TextView
+            android:id="@+id/adv_person_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/adv_person_name"
+            android:text="status"
+            android:textAllCaps="true"
+            android:layout_marginBottom="20dp"
+            android:textSize="16sp"
+            android:textColor="@color/common_google_signin_btn_text_light_focused"
+            android:layout_centerHorizontal="true"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/adv_profile_blackgroud">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginLeft="30dp"
+            android:orientation="vertical"
+            android:layout_marginRight="30dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="ชื่อ-นามสกุล"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:id="@+id/adv_person_full_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="ชื่อ-นามสกุล"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/adv_key"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/grey">
+                </TextView>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="อาจารย์ประจำสาชาวิชา"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:id="@+id/adv_person_major"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="สาขา"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/grey">
+
+
+                </TextView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="เบอร์โทรศัพท์"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:id="@+id/adv_person_moblie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="เบอร์โทรศัพท์"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/grey">
+
+
+                </TextView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="โต๊ะทํางาน"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:id="@+id/adv_person_office"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:text="โต๊ะทํางาน"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/grey">
+                </TextView>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/adv_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimaryDark"
+        app:itemIconTint="@drawable/nav_item_color_state"
+        app:itemTextColor="@drawable/nav_item_color_state"
+        app:menu="@menu/bottom_navigation_menu">
+    </android.support.design.widget.BottomNavigationView>
+
+
+
+</RelativeLayout>

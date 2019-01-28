@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.peetp.myproject.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -32,6 +33,8 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -50,7 +53,7 @@ public class SettingTeacherActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private StorageReference userProfileImageRef;
 
-    private String currentUserId;
+    private String currentUserId, saveCurrentTime, saveCurrentDate;
     final static int Gallery_Pick = 1;
 
     @Override
@@ -70,6 +73,15 @@ public class SettingTeacherActivity extends AppCompatActivity {
 
         loadingBar = new ProgressDialog(this);
         loadData();
+
+        Calendar calFordDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyymmdd");
+        saveCurrentDate = currentDate.format(calFordDate.getTime());
+
+        Calendar calFordTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("HHmmss");
+        saveCurrentTime = currentTime.format(calFordTime.getTime());
+
 
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +134,7 @@ public class SettingTeacherActivity extends AppCompatActivity {
 
                 Uri resultUri = result.getUri();
 
-                StorageReference filePath = userProfileImageRef.child(currentUserId + ".jpg");
+                StorageReference filePath = userProfileImageRef.child(currentUserId + saveCurrentDate + saveCurrentTime + ".jpg");
 
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -214,7 +226,6 @@ public class SettingTeacherActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task task) {
                 if(task.isSuccessful()){
-                    sendUserToProfileActivity();
                     Toast.makeText(SettingTeacherActivity.this, "ช้อมูลบันทึกเเสร็จสิ้น",Toast.LENGTH_LONG).show();
                     loadingBar.dismiss();
                 }
@@ -228,28 +239,23 @@ public class SettingTeacherActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        settingsUserRef.addValueEventListener(new ValueEventListener() {
+        settingsUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
-                    String myUserName = dataSnapshot.child("username").getValue().toString();
-                    String myFullName = dataSnapshot.child("fullname").getValue().toString();
-                    String myMajor = dataSnapshot.child("major").getValue().toString();
-                    String myMobileNumber = dataSnapshot.child("mobilenumber").getValue().toString();
-                    String myStatus = dataSnapshot.child("status").getValue().toString();
-                    String myOffice = dataSnapshot.child("office").getValue().toString();
+                    Users data = dataSnapshot.getValue(Users.class);
+                    String myMajor = data.getMajor();
 
                     String[] major = getResources().getStringArray(R.array.major);
                     final ArrayAdapter<String> adapter = new ArrayAdapter<String>(SettingTeacherActivity.this,
                             R.layout.support_simple_spinner_dropdown_item, major);
 
-                    Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfileImg);
-                    userName.setText(myUserName);
-                    userFullname.setText(myFullName);
-                    userStatus.setText(myStatus);
-                    userMobilePhone.setText(myMobileNumber);
-                    userOffice.setText(myOffice);
+                    Picasso.get().load(data.getProfileimage()).placeholder(R.drawable.profile).into(userProfileImg);
+                    userName.setText(data.getUsername());
+                    userFullname.setText(data.getFullname());
+                    userStatus.setText(data.getStatus());
+                    userMobilePhone.setText(data.getMobilenumber());
+                    userOffice.setText(data.getOffice());
                     majorSpinner.setAdapter(adapter);
                     if(myMajor.equals("เคมี")){
                         majorSpinner.setSelection(1);
@@ -290,10 +296,5 @@ public class SettingTeacherActivity extends AppCompatActivity {
         updateAccountBtn = (Button) findViewById(R.id.teacher_settings_update_btn);
         clearBtn = (Button) findViewById(R.id.teacher_settings_clear);
 
-    }
-    private void sendUserToProfileActivity(){
-        Intent profileIntent = new Intent(SettingTeacherActivity.this, TeacherProfileActivity.class);
-        startActivity(profileIntent);
-        finish();
     }
 }

@@ -20,16 +20,35 @@
         android:icon="@drawable/add_post"/>
 
     <item
-        android:id="@+id/nav_find_friends"
-        android:title="ค้นหาที่ปรึกษา"
-        android:icon="@drawable/find_people"/>
+        android:id="@+id/nav_counsel"
+        android:title="บันทึกการให้คำปรึกษา"
+        android:icon="@drawable/add_post"/>
 
+    <item android:id="@+id/nav_counsel_group"  android:title="บันทึกการให้คำปรึกษา">
+        <menu>
+            <item
+                android:id="@+id/nav_counsel_edited"
+                android:title="ได้รับการแก้ไขแล้ว"></item>
+            <item
+                android:id="@+id/nav_counsel_not"
+                android:title="ยังไม่ได้รับการแก้ไข"></item>
+        </menu>
+    </item>
 
     <item
         android:id="@+id/nav_friends"
-        android:title="รายชื่อที่ปรึกษา"
+        android:title="ที่ปรึกษาของคุณ"
         android:icon="@drawable/friends"/>
 
+    <item
+        android:id="@+id/nav_find_friends"
+        android:title="ค้นหาข้อที่ปรึกษาท่านอื่น"
+        android:icon="@drawable/find_people"/>
+
+    <item
+        android:id="@+id/nav_static"
+        android:title="ดูสถิติ"
+        android:icon="@drawable/ic_static"/>
 
 
     <item

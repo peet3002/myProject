@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.peetp.myproject.model.Comments;
+import com.example.peetp.myproject.model.Posts;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,7 +46,7 @@ public class ClickPostActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
     private ImageView clickPostImage, clickPostProfileImg;
-    private TextView clickPostDescription, clickPostUsername, clickPostDate, clickPostTime;
+    private TextView clickPostDescription, clickPostUsername, clickPostDate, clickPostTime, clickPostHeader, clickPostType;
     private ImageButton clickPostEdit, clickPostDelete;
 
     private EditText commentText;
@@ -53,7 +56,8 @@ public class ClickPostActivity extends AppCompatActivity {
     private DatabaseReference clickRef,commentRef, usersRef;
     private FirebaseAuth mAuth;
 
-    private String PostKey, currentUserId, databaseUserId, description, postImage, username, date, time, profileImage;
+    private int year;
+    private String PostKey, currentUserId, databaseUserId;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -70,6 +74,8 @@ public class ClickPostActivity extends AppCompatActivity {
         clickPostUsername =  (TextView) findViewById(R.id.click_profile_name);
         clickPostDate = (TextView) findViewById(R.id.click_post_date);
         clickPostTime = (TextView) findViewById(R.id.click_post_time);
+        clickPostHeader = (TextView) findViewById(R.id.click_post_header);
+        clickPostType = (TextView) findViewById(R.id.click_post_type);
         clickPostProfileImg = (ImageView) findViewById(R.id.click_profile_img) ;
         clickPostImage = (ImageView) findViewById(R.id.click_post_image);
         clickPostDescription = (TextView) findViewById(R.id.click_post_description);
@@ -90,7 +96,7 @@ public class ClickPostActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setTitle("รายละเอียดกระทู้");
 
         final ScrollView main = (ScrollView) findViewById(R.id.scrollView1);
 
@@ -136,20 +142,23 @@ public class ClickPostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                if(dataSnapshot.exists()){
-                   username = dataSnapshot.child("username").getValue().toString();
-                   date = dataSnapshot.child("date").getValue().toString();
-                   time = dataSnapshot.child("time").getValue().toString();
-                   description = dataSnapshot.child("description").getValue().toString();
-                   postImage = dataSnapshot.child("postimage").getValue().toString();
-                   profileImage = dataSnapshot.child("profileimage").getValue().toString();
-                   databaseUserId = dataSnapshot.child("uid").getValue().toString();
+                   Posts data = dataSnapshot.getValue(Posts.class);
+                   databaseUserId = data.getUid();
 
-                   clickPostUsername.setText(username);
-                   clickPostDate.setText(date);
-                   clickPostTime.setText(time);
-                   clickPostDescription.setText(description);
-                   Picasso.get().load(postImage).into(clickPostImage);
-                   Picasso.get().load(profileImage).into(clickPostProfileImg);
+                   if(dataSnapshot.hasChild("postimage")){
+                       Picasso.get().load(data.getPostimage()).into(clickPostImage);
+                   }else{
+                       clickPostImage.setVisibility(View.GONE);
+                   }
+
+                   clickPostUsername.setText(data.getUsername());
+                   clickPostDate.setText(data.getDate());
+                   clickPostTime.setText(data.getTime());
+                   clickPostDescription.setText(data.getDescription());
+                   clickPostHeader.setText(data.getPostheader());
+                   clickPostType.setText(data.getPosttype());
+
+                   Picasso.get().load(data.getProfileimage()).into(clickPostProfileImg);
 
                    if(currentUserId.equals(databaseUserId)){
                        clickPostDelete.setVisibility(View.VISIBLE);
@@ -158,10 +167,9 @@ public class ClickPostActivity extends AppCompatActivity {
                    clickPostEdit.setOnClickListener(new View.OnClickListener() {
                        @Override
                        public void onClick(View v) {
-                           editCurrentPost(description);
+
                        }
                    });
-
                }
             }
 
@@ -174,17 +182,18 @@ public class ClickPostActivity extends AppCompatActivity {
         clickPostDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ClickPostActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ClickPostActivity.this, R.style.AlertDialog);
 
-                builder.setMessage("คุณต้องการลบใช่หรือไม่")
-                        .setCancelable(false)
-                        .setPositiveButton("ใช่", new DialogInterface.OnClickListener() {
+                builder.setTitle("คุณต้องการลบใช่หรือไม่");
+                builder.setMessage("ระบบจะทำการลบกระทู้ของคุณออกจากระบบ");
+                builder.setCancelable(false);
+                builder.setPositiveButton("ใช่", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 deleteCurrentPost();
                             }
-                        })
-                        .setNegativeButton("ไม่", new DialogInterface.OnClickListener() {
+                        });
+                builder.setNegativeButton("ไม่", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
@@ -192,9 +201,22 @@ public class ClickPostActivity extends AppCompatActivity {
                         });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
             }
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void displsyAllUsersComment(){
         FirebaseRecyclerOptions<Comments> options =
@@ -241,34 +263,7 @@ public class ClickPostActivity extends AppCompatActivity {
         }
     }
 
-    private void editCurrentPost(String description) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ClickPostActivity.this);
-        builder.setTitle("แก้ไขกระทู้:");
 
-        final EditText inputField = new EditText(ClickPostActivity.this);
-        inputField.setText(description);
-        builder.setView(inputField);
-
-        builder.setPositiveButton("แก้ไข", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                clickRef.child("description").setValue(inputField.getText().toString());
-                Toast.makeText(ClickPostActivity.this, "ทำการแก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        builder.setNegativeButton("ยกเลิก", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        Dialog dialog = builder.create();
-        dialog.show();
-        dialog.getWindow();
-    }
 
 
     private void validateComment(String userName, String userProfileImage) {
@@ -278,19 +273,25 @@ public class ClickPostActivity extends AppCompatActivity {
             Toast.makeText(this, "กรุณากรอกคอมเมนส์", Toast.LENGTH_SHORT).show();
         }else {
             Calendar calFordDate = Calendar.getInstance();
-            SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
+            SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM");
             final String saveCurrentDate = currentDate.format(calFordDate.getTime());
+
+            Calendar calFordYear = Calendar.getInstance();
+            SimpleDateFormat currentYear = new SimpleDateFormat("yyyy",new Locale("th"));
+            final String saveCurrentYear = currentYear.format(calFordYear.getTime());
+            year = Integer.parseInt(saveCurrentYear);
+            year += 543;
 
             Calendar calFordTime = Calendar.getInstance();
             SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
             final String saveCurrentTime = currentTime.format(calFordDate.getTime());
 
-            final String RandomKey = currentUserId + saveCurrentDate + saveCurrentTime;
+            final String RandomKey = currentUserId + year + saveCurrentDate + saveCurrentTime;
 
             HashMap hashMap = new HashMap();
             hashMap.put("uid", currentUserId);
             hashMap.put("comment", comment);
-            hashMap.put("date", saveCurrentDate);
+            hashMap.put("date", saveCurrentDate + "-" +year);
             hashMap.put("time", saveCurrentTime);
             hashMap.put("username", userName);
             hashMap.put("profileimage", userProfileImage);

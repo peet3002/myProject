@@ -71,7 +71,8 @@
                 android:layout_marginRight="5dp"
                 android:hint="ชื่อ-นามสกุล"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:enabled="false"/>
 
             <Spinner
                 android:id="@+id/teacher_settings_major_spinner"

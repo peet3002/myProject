@@ -1,11 +1,30 @@
 package com.example.peetp.myproject.model;
 
 public class Users {
-    public String  profileimage, status, uid, degree, fullname, major, mobilenumber, sec, username, usertype, office, type_username;
+    private String  profileimage, status, uid, degree, fullname, major, mobilenumber, sec, username, usertype, office, type_username, adviser, key, onlinestatus;
 
     public Users(){
 
     }
+
+    public Users(String profileimage, String status, String uid, String degree, String fullname, String major, String mobilenumber, String sec, String username, String usertype, String office, String type_username, String adviser, String key, String onlinestatus) {
+        this.profileimage = profileimage;
+        this.status = status;
+        this.uid = uid;
+        this.degree = degree;
+        this.fullname = fullname;
+        this.major = major;
+        this.mobilenumber = mobilenumber;
+        this.sec = sec;
+        this.username = username;
+        this.usertype = usertype;
+        this.office = office;
+        this.type_username = type_username;
+        this.adviser = adviser;
+        this.key = key;
+        this.onlinestatus = onlinestatus;
+    }
+
     public String getProfileimage() {
         return profileimage;
     }
@@ -102,18 +121,30 @@ public class Users {
         this.type_username = type_username;
     }
 
-    public Users(String profileimage, String status, String uid, String degree, String fullname, String major, String mobilenumber, String sec, String username, String usertype, String office, String type_username) {
-        this.profileimage = profileimage;
-        this.status = status;
-        this.uid = uid;
-        this.degree = degree;
-        this.fullname = fullname;
-        this.major = major;
-        this.mobilenumber = mobilenumber;
-        this.sec = sec;
-        this.username = username;
-        this.usertype = usertype;
-        this.office = office;
-        this.type_username = type_username;
+    public String getAdviser() {
+        return adviser;
     }
+
+    public void setAdviser(String adviser) {
+        this.adviser = adviser;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getOnlinestatus() {
+        return onlinestatus;
+    }
+
+    public void setOnlinestatus(String onlinestatus) {
+        this.onlinestatus = onlinestatus;
+    }
+
+
+
 }

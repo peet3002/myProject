@@ -41,24 +41,18 @@ public class TeacherProfileActivity extends AppCompatActivity {
         profileUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
 
         IntializeFields();
-        profileUserRef.addValueEventListener(new ValueEventListener() {
+        profileUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String myProfileImage = dataSnapshot.child("profileimage").getValue().toString();
-                String myUserName = dataSnapshot.child("username").getValue().toString();
-                String myFullName = dataSnapshot.child("fullname").getValue().toString();
-                String myMajor = dataSnapshot.child("major").getValue().toString();
-                String myMobileNumber = dataSnapshot.child("mobilenumber").getValue().toString();
-                String myStatus = dataSnapshot.child("status").getValue().toString();
-                String myOffice = dataSnapshot.child("office").getValue().toString();
+                Users data = dataSnapshot.getValue(Users.class);
 
-                Picasso.get().load(myProfileImage).placeholder(R.drawable.profile).into(userProfileImg);
-                userMajor.setText(myMajor);
-                userName.setText(myUserName);
-                userFullname.setText(myFullName);
-                userStatus.setText(myStatus);
-                userMobilePhone.setText(myMobileNumber);
-                userOffice.setText(myOffice);
+                Picasso.get().load(data.getProfileimage()).placeholder(R.drawable.profile).into(userProfileImg);
+                userMajor.setText(data.getMajor());
+                userName.setText(data.getUsername());
+                userFullname.setText(data.getFullname());
+                userStatus.setText(data.getStatus());
+                userMobilePhone.setText(data.getMobilenumber());
+                userOffice.setText(data.getOffice());
 
 
             }

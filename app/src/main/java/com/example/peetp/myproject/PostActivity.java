@@ -11,11 +11,15 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.peetp.myproject.model.Posts;
+import com.example.peetp.myproject.model.Users;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -40,16 +45,18 @@ public class PostActivity extends AppCompatActivity {
     private ProgressDialog loadingBar;
     private ImageButton selectPostImage;
     private Button updatePostButton;
-    private EditText postDescription;
+    private EditText postDescription, postHeader;
+    private Spinner postType;
     private static final  int Gallery_Pick = 1;
     private Uri imageUri;
-    private String description;
+    private String description, header, type;
 
     private StorageReference postImagesRefrence;
     private DatabaseReference usersRef , postRef;
     private FirebaseAuth mAuth;
 
-    private String saveCurrentDate, saveCurrentTime, postRandomName, downloadUrl, current_user_id;
+    private String saveCurrentDate, saveCurrentTime, postRandomName, downloadUrl, current_user_id, saveCurrentYear;
+    private int year;
     private long countPosts = 0;
 
     @Override
@@ -66,6 +73,9 @@ public class PostActivity extends AppCompatActivity {
 
         selectPostImage = (ImageButton) findViewById(R.id.select_post_image);
         updatePostButton = (Button) findViewById(R.id.update_post_button);
+        postHeader = (EditText) findViewById(R.id.post_header);
+        postType = (Spinner) findViewById(R.id.post_type);
+
         postDescription = (EditText) findViewById(R.id.post_description);
         loadingBar = new ProgressDialog(this);
 
@@ -74,6 +84,11 @@ public class PostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("เขียนกระทู้ใหม่");
+
+        String[] postTypeStrings = getResources().getStringArray(R.array.postType);
+        ArrayAdapter<String> adapterPostType = new ArrayAdapter<String>(this,
+                R.layout.support_simple_spinner_dropdown_item, postTypeStrings);
+        postType.setAdapter(adapterPostType);
 
         selectPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,16 +106,21 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void validatePostInfo() {
+        header = postHeader.getText().toString();
+        type = postType.getSelectedItem().toString();
         description = postDescription.getText().toString();
 
-        if (imageUri == null){
-            Toast.makeText(this, "Please select image...",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(header)){
+            Toast.makeText(this, "กรุณากรอกชื่อเรื่อง",Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(type)){
+            Toast.makeText(this, "กรุณาเลือกหมวดหมู่",Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(description)){
-            Toast.makeText(this, "Please say someting...",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "กรุณากรอกข้อความ",Toast.LENGTH_SHORT).show();
         }
         else {
-            loadingBar.setTitle("Add new post");
+            loadingBar.setTitle("เพิ่มกระทู้");
             loadingBar.setMessage("กรุณารอสักครู่กำลังสร้างกระทุ้ใหม่...");
             loadingBar.show();
             loadingBar.setCanceledOnTouchOutside(true);
@@ -111,42 +131,57 @@ public class PostActivity extends AppCompatActivity {
 
     private void storingImageToFirebaseStorage() {
         Calendar calFordDate = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM");
         saveCurrentDate = currentDate.format(calFordDate.getTime());
 
+        Calendar calFordYear = Calendar.getInstance();
+        SimpleDateFormat currentYear = new SimpleDateFormat("yyyy",new Locale("th"));
+        saveCurrentYear = currentYear.format(calFordYear.getTime());
+        year = Integer.parseInt(saveCurrentYear);
+        year += 543;
+
         Calendar calFordTime = Calendar.getInstance();
-        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
         saveCurrentTime = currentTime.format(calFordDate.getTime());
 
-        postRandomName = saveCurrentDate + saveCurrentTime;
-        final StorageReference filePath = postImagesRefrence.child("Post Images").child(imageUri.getLastPathSegment() + postRandomName + ".jpg");
-        filePath.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()){
-                    throw task.getException();
+        postRandomName = year + saveCurrentDate + saveCurrentTime;
+
+        if(imageUri != null) {
+            final StorageReference filePath = postImagesRefrence.child("Post Images").child(imageUri.getLastPathSegment() + postRandomName + ".jpg");
+            filePath.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()){
+                        throw task.getException();
+                    }
+                    return filePath.getDownloadUrl();
                 }
-                return filePath.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()){
-                    Uri downUri = task.getResult();
-                    Toast.makeText(PostActivity.this, "Profile Image stored successfully to Firebase storage...", Toast.LENGTH_SHORT).show();
-                    downloadUrl = downUri.toString();
-                    SavingPostInformationToDatabase();
-                }
-                else {
-                    String message = task.getException().getMessage();
-                    Toast.makeText(PostActivity.this, "Error occured: " + message, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
+            })
+                    .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            if (task.isSuccessful()){
+                                Uri downUri = task.getResult();
+                                downloadUrl = downUri.toString();
+                                SavingPostInformationToDatabase();
+                            }
+                            else {
+                                String message = task.getException().getMessage();
+                                Toast.makeText(PostActivity.this, "Error occured: " + message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+        else {
+            SavingPostInformationToDatabase();
+        }
+
+
+        }
+
 
     private void SavingPostInformationToDatabase() {
-        postRef.addValueEventListener(new ValueEventListener() {
+        postRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -163,21 +198,24 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        usersRef.child(current_user_id).addValueEventListener(new ValueEventListener() {
+        usersRef.child(current_user_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    final String userName = dataSnapshot.child("username").getValue().toString();
-                    final String userProfileImage = dataSnapshot.child("profileimage").getValue().toString();
+                    Users data = dataSnapshot.getValue(Users.class);
 
                     HashMap postsMap = new HashMap();
                     postsMap.put("uid", current_user_id);
-                    postsMap.put("date", saveCurrentDate);
+                    postsMap.put("date", saveCurrentDate + "-" +year);
                     postsMap.put("time", saveCurrentTime);
+                    postsMap.put("postheader", header);
+                    postsMap.put("posttype", type);
                     postsMap.put("description", description);
-                    postsMap.put("postimage", downloadUrl);
-                    postsMap.put("profileimage", userProfileImage);
-                    postsMap.put("username", userName);
+                    if(imageUri != null){
+                        postsMap.put("postimage", downloadUrl);
+                    }
+                    postsMap.put("profileimage", data.getProfileimage());
+                    postsMap.put("username", data.getUsername());
                     postsMap.put("counter", countPosts);
 
                     postRef.child(current_user_id + postRandomName).updateChildren(postsMap)
@@ -215,22 +253,31 @@ public class PostActivity extends AppCompatActivity {
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left , R.anim.slide_out_right);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == Gallery_Pick && resultCode == RESULT_OK  && data != null){
             imageUri = data.getData();
             selectPostImage.setImageURI(imageUri);
+        }else
+        {
+            imageUri = null;
 
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id =item.getItemId();
-
-        if (id == android.R.id.home){
-            sendUserToMainActivity();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

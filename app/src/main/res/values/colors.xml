@@ -13,6 +13,9 @@
     <color name="colorTextHint">#e1e1e1</color>
     <color name="colorAccept">#5db95d</color>
     <color name="colorCencel">#d95450</color>
+    <color name="searchHintColor_searchToolbar">#727272</color>
+    <color name="searchTextColor_searchToolbar">#212121</color>
+    <color name="background">#eeeeee</color>
 
 
 

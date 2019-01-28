@@ -1,172 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingActivity">
 
-    <include
-        android:id="@+id/settings_toolbar"
-        layout="@layout/app_bar_layout">
-
-    </include>
-
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/settings_toolbar">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <include
+            android:id="@+id/settings_toolbar"
+            layout="@layout/app_bar_layout">
+        </include>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/settings_profile_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/settings_toolbar"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/profile"/>
+        <EditText
+            android:id="@+id/settings_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:orientation="vertical"
-            android:paddingLeft="24dp"
-            android:paddingTop="56dp"
-            android:paddingRight="24dp">
-            
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/settings_profile_image"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/profile"/>
+            android:layout_below="@id/settings_profile_image"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:hint="คำแนะนำตัว"
+            android:padding="20dp"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/settings_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_status"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:hint="ชื่อโปรไฟล์"
+            android:padding="10dp"
+            android:textSize="20dp" />
+        <EditText
+            android:id="@+id/settings_fullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_username"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:hint="ชื่อ-นามสกุล"
+            android:padding="10dp"
+            android:textSize="20dp" />
+        <EditText
+            android:id="@+id/settings_uid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_fullname"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:hint="รหัสนักศึกษา"
+            android:padding="10dp"
+            android:textSize="20dp" />
+
+        <Spinner
+            android:id="@+id/settings_major_spinner"
+            android:layout_width="379dp"
+            android:layout_height="39dp"
+            android:layout_below="@id/settings_uid"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"></Spinner>
+
+        <LinearLayout
+            android:id="@+id/linear_degree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_major_spinner"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
             <EditText
-                android:id="@+id/settings_status"
+                android:id="@+id/setting_degree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/settings_profile_image"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:hint="คำแนะนำตัว"
-                android:padding="20dp"
-                android:textSize="20dp" />
-            <EditText
-                android:id="@+id/settings_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/settings_status"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:hint="ชื่อโปรไฟล์"
+                android:hint="ชั้นปี"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:layout_weight="0.5"/>
             <EditText
-                android:id="@+id/settings_fullname"
+                android:id="@+id/setting_sec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/settings_username"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:hint="ชื่อ-นามสกุล"
+                android:hint="เซค"
                 android:padding="10dp"
-                android:textSize="20dp" />
-            <EditText
-                android:id="@+id/settings_uid"
+                android:textSize="20dp"
+                android:layout_weight="0.5"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/settings_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linear_degree"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:hint="เบอร์โทรศัพท์"
+            android:padding="10dp"
+            android:textSize="20dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/settings_phone"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/setting_update_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/settings_fullname"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:hint="รหัสนักศึกษา"
-                android:padding="10dp"
-                android:textSize="20dp" />
-
-            <Spinner
-                android:id="@+id/settings_major_spinner"
-                android:layout_width="379dp"
-                android:layout_height="39dp"
-                android:layout_below="@id/settings_uid"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="5dp"></Spinner>
-
-            <LinearLayout
-                android:id="@+id/linear_degree"
+                android:layout_below="@id/settings_phone"
+                android:text="บันทึก"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_chat_me"
+                android:textColor="@color/colorWhite"/>
+            <Button
+                android:id="@+id/setting_clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/settings_major_spinner"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-
-                <EditText
-                    android:id="@+id/setting_degree"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:hint="ชั้นปี"
-                    android:padding="10dp"
-                    android:textSize="20dp"
-                    android:layout_weight="0.5"/>
-                <EditText
-                    android:id="@+id/setting_sec"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:hint="เซค"
-                    android:padding="10dp"
-                    android:textSize="20dp"
-                    android:layout_weight="0.5"/>
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/settings_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/linear_degree"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:hint="เบอร์โทรศัพท์"
-                android:padding="10dp"
-                android:textSize="20dp" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/settings_phone"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp">
-
-                <Button
-                    android:id="@+id/setting_update_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/settings_phone"
-                    android:text="บันทึก"
-                    android:layout_weight="0.5"
-                    android:background="@drawable/bg_chat_me"
-                    android:textColor="@color/colorWhite"/>
-                <Button
-                    android:id="@+id/setting_clear"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/settings_phone"
-                    android:text="ยกเลิด"
-                    android:layout_weight="0.5"
-                    android:background="@drawable/bg_chat_you"
-                    android:textColor="@color/colorPrimaryDark"/>
-            </LinearLayout>
-
-        </RelativeLayout>
-    </ScrollView>
-
-</RelativeLayout>
+                android:layout_below="@id/settings_phone"
+                android:text="ยกเลิด"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_chat_you"
+                android:textColor="@color/colorPrimaryDark"/>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

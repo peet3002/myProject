@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@color/colorWhite">
+
+    <RelativeLayout
+        android:id="@+id/rl_photo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/item_msg_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile"/>
+
+        <ImageView
+            android:id="@+id/img_online"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/circle_online"
+            android:layout_below="@+id/adv_person_image"
+            android:visibility="gone"
+            android:layout_alignBottom="@+id/item_msg_image"
+            android:layout_alignRight="@+id/item_msg_image"
+            android:layout_toRightOf="@+id/adv_person_image"
+            android:layout_toEndOf="@+id/adv_person_image"/>
+        <ImageView
+            android:id="@+id/img_offline"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/circle_offline"
+            android:layout_below="@+id/adv_person_image"
+            android:layout_toRightOf="@+id/adv_person_image"
+            android:visibility="gone"
+            android:layout_alignRight="@+id/item_msg_image"
+            android:layout_alignBottom="@+id/item_msg_image"
+            android:layout_toEndOf="@+id/adv_person_image"/>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:paddingRight="10dp"
+        android:layout_toRightOf="@+id/rl_photo"
+        android:background="@drawable/bg_bottom_grey"
+        android:gravity="center_vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+            <TextView
+                android:id="@+id/item_msg_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Laura Owens"
+                style="@style/h2" />
+            <!--<View-->
+                <!--android:id="@+id/online_indicator"-->
+                <!--android:layout_toRightOf="@id/tv_user_name"-->
+                <!--android:layout_alignTop="@id/tv_user_name"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:layout_marginLeft="5sp"-->
+                <!--android:layout_width="10dp"-->
+                <!--android:layout_height="10dp"-->
+                <!--android:background="@drawable/bg_online"/>-->
+            <TextView
+                android:id="@+id/item_msg_messages"
+                android:layout_below="@id/item_msg_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hi, Joe, looks great! :)"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextInfo"
+                android:layout_marginTop="3dp" />
+            <TextView
+                android:id="@+id/item_msg_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5:04pm"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="12sp"
+                android:layout_alignTop="@id/item_msg_username"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
