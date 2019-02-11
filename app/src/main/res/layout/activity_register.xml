@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient"
+    android:background="@color/colorPrimary"
     android:fitsSystemWindows="true">
 
     <LinearLayout
+        android:id="@+id/head"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingTop="56dp"
         android:paddingRight="24dp">
 
+        <TextView
+            android:id="@+id/register_text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="สมัครสมาชิก"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="30dp" />
 
         <!-- Email Label -->
             <EditText
@@ -49,7 +59,6 @@
                 android:padding="1dp"
                 android:drawableLeft="@drawable/password"/>
 
-
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/register_create_account"
@@ -58,7 +67,25 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="สมัครสมาชิก" />
+            android:text="สมัครสมาชิก"
+            android:background="@color/colorWhite"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/head">
+
+        <TextView
+            android:id="@+id/register_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="คุณมีสมาชิกอยู่แล้ว? "
+            android:textSize="16dp"/>
 
         <TextView
             android:id="@+id/link_login"
@@ -66,8 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="Already a member? Login"
-            android:textSize="16dip" />
-
+            android:text="เข้าสู่ระบบ"
+            android:textSize="16dp"
+            android:textColor="@color/colorWhite"/>
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>

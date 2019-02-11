@@ -54,6 +54,7 @@ public class PostActivity extends AppCompatActivity {
     private StorageReference postImagesRefrence;
     private DatabaseReference usersRef , postRef;
     private FirebaseAuth mAuth;
+    private Users users;
 
     private String saveCurrentDate, saveCurrentTime, postRandomName, downloadUrl, current_user_id, saveCurrentYear;
     private int year;
@@ -202,7 +203,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    Users data = dataSnapshot.getValue(Users.class);
+                    users = dataSnapshot.getValue(Users.class);
 
                     HashMap postsMap = new HashMap();
                     postsMap.put("uid", current_user_id);
@@ -214,8 +215,8 @@ public class PostActivity extends AppCompatActivity {
                     if(imageUri != null){
                         postsMap.put("postimage", downloadUrl);
                     }
-                    postsMap.put("profileimage", data.getProfileimage());
-                    postsMap.put("username", data.getUsername());
+                    postsMap.put("profileimage", users.getProfileimage());
+                    postsMap.put("username", users.getUsername());
                     postsMap.put("counter", countPosts);
 
                     postRef.child(current_user_id + postRandomName).updateChildren(postsMap)

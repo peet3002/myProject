@@ -31,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -219,9 +220,10 @@ public class ClickPostActivity extends AppCompatActivity {
 
 
     private void displsyAllUsersComment(){
+        Query sortPost = commentRef.orderByChild("date_time");
         FirebaseRecyclerOptions<Comments> options =
                 new FirebaseRecyclerOptions.Builder<Comments>()
-                        .setQuery(commentRef, Comments.class)
+                        .setQuery(sortPost, Comments.class)
                         .build();
 
         FirebaseRecyclerAdapter<Comments, CommentsViewHolder> firebaseRecyclerAdapter

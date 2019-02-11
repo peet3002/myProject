@@ -22,7 +22,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
 
                 finally {
-                    Intent mainIntent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    Intent mainIntent = new Intent(WelcomeActivity.this, WelcomeHelloActivity.class);
                     startActivity(mainIntent);
                 }
             }

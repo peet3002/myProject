@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient"
+    android:background="@color/colorPrimary"
     android:fitsSystemWindows="true">
 
     <LinearLayout
+        android:id="@+id/head"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
+
+        <TextView
+            android:id="@+id/login_text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="เข้าสู่ระบบ"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="30dp" />
 
         <!--  Email Label -->
             <EditText android:id="@+id/login_email"
@@ -41,16 +52,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
+            android:background="@color/colorWhite"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
             android:padding="12dp"
             android:text="เข้าสู่ระบบ"/>
 
-        <TextView android:id="@+id/register_account_link"
-            android:layout_width="fill_parent"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/head"
+        >
+
+        <TextView
+            android:id="@+id/login_text2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="No account yet? Create one"
-            android:gravity="center"
-            android:textSize="16dip"/>
+            android:text="ยังไม่เคยลงทะเบียน? "
+            android:textSize="16dp"/>
+
+        <TextView android:id="@+id/register_account_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ลงทะเบียน"
+            android:textSize="16dp"
+            android:textColor="@color/colorWhite"/>
 
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>

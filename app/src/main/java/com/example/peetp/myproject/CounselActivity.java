@@ -60,6 +60,8 @@ public class CounselActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.counsel_bar_layout);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("บันทึกการให้คำปรึกษา");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         loadingBar = new ProgressDialog(this);
 

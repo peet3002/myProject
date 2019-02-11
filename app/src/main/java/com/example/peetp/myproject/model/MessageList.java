@@ -1,8 +1,6 @@
 package com.example.peetp.myproject.model;
 
 
-import java.util.Comparator;
-
 public class MessageList {
     private String id, message, receiver ,date, time, profileimage, username;
 

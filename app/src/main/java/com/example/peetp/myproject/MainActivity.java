@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 
 import com.example.peetp.myproject.model.Posts;
+import com.example.peetp.myproject.model.Users;
 import com.example.peetp.myproject.videocall.BaseActivity;
 import com.example.peetp.myproject.videocall.SinchService;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -60,6 +61,8 @@ public class MainActivity extends BaseActivity implements OnSearchToolbarQueryTe
 
     private CircleImageView navProfileImage;
     private TextView navProfileUserName;
+
+    private Users users;
 
 
     private String profileDefault = "https://firebasestorage.googleapis.com/v0/b/myproject-adc06.appspot.com/o/Profile%20Images%2Fprofile.png?alt=media&token=c5fb2184-5b8b-4e18-a791-95a52592f9ec";
@@ -253,7 +256,7 @@ public class MainActivity extends BaseActivity implements OnSearchToolbarQueryTe
                         Picasso.get().load(model.getPostimage()).into(holder.postImage);
 
 
-                        postsRef.child(PostKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        postsRef.child(PostKey).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -423,8 +426,8 @@ public class MainActivity extends BaseActivity implements OnSearchToolbarQueryTe
     private void status(String onlineStatus){
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("onlinestatus", onlineStatus);
-
         usersRef.child(currentUserId).updateChildren(hashMap);
+
     }
 
     private void setId(String cuid) {

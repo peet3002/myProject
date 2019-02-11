@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.peetp.myproject.model.Student;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -63,6 +64,8 @@ public class SetUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference userRef, usersRef, stdRef, teacherRef, adviserRef;
     private StorageReference userProfileImageRef;
+
+    private Student student;
 
 
     private int textlength = 0, year;

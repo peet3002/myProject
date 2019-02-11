@@ -30,10 +30,10 @@
         <Spinner
             android:id="@+id/counsel_type"
             android:background="@drawable/spinner_background"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_weight="0.9"
-            android:layout_marginRight="99dp">
+            android:layout_weight="0.9">
         </Spinner>
 
     </LinearLayout>

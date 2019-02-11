@@ -1,7 +1,7 @@
 package com.example.peetp.myproject.model;
 
 public class Posts {
-    private String uid, time, date, postimage, profileimage, description, username, postheader, posttype;
+    private String uid, time, date, postimage, profileimage, description,  username, postheader, posttype;
 
     public Posts(){
 

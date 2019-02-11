@@ -104,7 +104,7 @@ public class AdviserProfileActivity extends BaseActivity {
                         dataKeys=dataKeys+child.getKey() + "";
                     }
 
-                    userKey.setText(dataKeys);
+                   userKey.setText(dataKeys);
 
 
 

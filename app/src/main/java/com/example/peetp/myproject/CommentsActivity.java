@@ -85,9 +85,10 @@ public class CommentsActivity extends AppCompatActivity {
     }
 
     private void displayAllComment(){
+        Query sortPost = postsRef.orderByChild("date_time");
         FirebaseRecyclerOptions<Comments> options =
                 new FirebaseRecyclerOptions.Builder<Comments>()
-                        .setQuery(postsRef, Comments.class)
+                        .setQuery(sortPost, Comments.class)
                         .build();
 
         FirebaseRecyclerAdapter<Comments, CommentsViewHolder> firebaseRecyclerAdapter
@@ -168,14 +169,20 @@ public class CommentsActivity extends AppCompatActivity {
             year = Integer.parseInt(saveCurrentYear);
             year += 543;
 
+            Calendar calFordYearDate = Calendar.getInstance();
+            SimpleDateFormat currentYearDate = new SimpleDateFormat("MMdd");
+            final String saveCurrentMonthDate = currentYearDate.format(calFordYearDate.getTime());
+
             Calendar calFordTime = Calendar.getInstance();
             SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss");
             final String saveCurrentTime = currentTime.format(calFordDate.getTime());
 
+            Calendar calFordTime2 = Calendar.getInstance();
+            SimpleDateFormat currentTime2 = new SimpleDateFormat("HHmmss");
+            final String saveCurrentTime2 = currentTime2.format(calFordDate.getTime());
+
 
             final String RandomKey = current_user_id + year + saveCurrentDate + saveCurrentTime;
-
-
 
             HashMap hashMap = new HashMap();
             hashMap.put("uid", current_user_id);
@@ -184,6 +191,7 @@ public class CommentsActivity extends AppCompatActivity {
             hashMap.put("time", saveCurrentTime);
             hashMap.put("username", userName);
             hashMap.put("profileimage", userProfileImage);
+            hashMap.put("date_time", year + saveCurrentMonthDate + saveCurrentTime2);
 
             postsRef.child(RandomKey).updateChildren(hashMap);
         }

@@ -7,4 +7,5 @@
     android:background="@drawable/asdad"
     tools:context=".WelcomeActivity">
 
+
 </RelativeLayout>

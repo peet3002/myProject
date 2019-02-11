@@ -2,6 +2,7 @@ package com.example.peetp.myproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.peetp.myproject.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,14 +30,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button loginButton;
     private EditText useremail, userPassword;
-    private TextView needNewAccountLink;
+    private TextView needNewAccountLink, text1, text2;
     private ProgressDialog loadingBar;
 
     private FirebaseAuth mAuth;
-
-    private String parentDbName = "Users";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +43,21 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         needNewAccountLink = (TextView) findViewById(R.id.register_account_link);
+        text1 = (TextView) findViewById(R.id.login_text1);
+        text2 = (TextView) findViewById(R.id.login_text2);
         useremail = (EditText) findViewById(R.id.login_email);
         userPassword = (EditText) findViewById(R.id.login_password);
         loginButton = (Button) findViewById(R.id.login_button);
 
         loadingBar = new ProgressDialog(this);
+
+        Typeface extraLight = Typeface.createFromAsset(getAssets(), "fonts/Prompt-ExtraLight.ttf");
+        needNewAccountLink.setTypeface(extraLight);
+        text1.setTypeface(extraLight);
+        text2.setTypeface(extraLight);
+        useremail.setTypeface(extraLight);
+        userPassword.setTypeface(extraLight);
+        loginButton.setTypeface(extraLight);
 
         needNewAccountLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,8 +132,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void SendUserToMainActivity() {
-
-
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);

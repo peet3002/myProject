@@ -337,7 +337,7 @@ public class CounselDetailActivity extends AppCompatActivity {
             hashMap.put("key", current_user_id);
             hashMap.put("comment", comment);
             hashMap.put("date", saveCurrentDate + "-" +year);
-            hashMap.put("date_time",year+ saveCurrentYearDate + saveCurrentTime2);
+            hashMap.put("date_time",saveCurrentYearDate + saveCurrentTime2);
             hashMap.put("time", saveCurrentTime);
             hashMap.put("username", userName);
             commentRef.child(RandomKey).updateChildren(hashMap);

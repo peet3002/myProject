@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">myProject</string>
+    <string name="app_name">Consult-RmuttSci</string>
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_close">Drawer Close</string>
     <string-array name="major">

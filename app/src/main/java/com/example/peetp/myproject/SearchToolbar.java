@@ -76,7 +76,7 @@ public class SearchToolbar implements View.OnClickListener{
                 listner.onQueryTextChange(editable.toString());
                 if(editable.length()>0)
                 {
-                    micBtn.setVisibility(View.GONE);
+                    micBtn.setVisibility(View.VISIBLE);
                     clearBtn.setVisibility(View.VISIBLE);
                 }
                 else
